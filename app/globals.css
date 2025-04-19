@@ -1,0 +1,96 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+:root {
+  --absolute-white: #ffffff;
+  --absolute-black: #000000;
+
+  --orange-65: #ff8d4d;
+  --orange-70: #ff9e66;
+  --orange-75: #ffae80;
+  --orange-80: #ffbe99;
+  --orange-90: #ffdecc;
+  --orange-95: #ffefe5;
+  --orange-97: #fff5f0;
+  --orange-99: #fffcfa;
+
+  --gray-10: #1a1a1a;
+  --gray-15: #262626;
+  --gray-20: #333333;
+  --gray-30: #4c4c4d;
+  --gray-35: #59595a;
+  --gray-40: #656567;
+  --gray-60: #98989a;
+  --gray-70: #b3b3b3;
+}
+
+@theme inline {
+  --color-absolute-white: var(--absolute-white);
+  --color-absolute-black: var(--absolute-black);
+
+  --color-orange-65: var(--orange-65);
+  --color-orange-70: var(--orange-70);
+  --color-orange-75: var(--orange-75);
+  --color-orange-80: var(--orange-80);
+  --color-orange-90: var(--orange-90);
+  --color-orange-95: var(--orange-95);
+  --color-orange-97: var(--orange-97);
+  --color-orange-99: var(--orange-99);
+
+  --color-gray-10: var(--gray-10);
+  --color-gray-15: var(--gray-15);
+  --color-gray-20: var(--gray-20);
+  --color-gray-30: var(--gray-30);
+  --color-gray-35: var(--gray-35);
+  --color-gray-40: var(--gray-40);
+  --color-gray-60: var(--gray-60);
+  --color-gray-70: var(--gray-70);
+
+  --font-outfit: var(--font-outfit);
+  --font-raleway: var(--font-raleway);
+}
+
+body {
+  background: var(--orange-97);
+  color: var(--absolute-black);
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--orange-97);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--orange-70);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--orange-65);
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-raleway), sans-serif;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

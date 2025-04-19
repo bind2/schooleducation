@@ -1,0 +1,31 @@
+{
+  "name": "school-education",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "lenis": "^1.2.3",
+    "lucide-react": "^0.487.0",
+    "motion": "^12.7.4",
+    "next": "15.3.0",
+    "nextjs-toploader": "^3.8.16",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "swiper": "^11.2.6",
+    "tailwind-scrollbar": "^4.0.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.4",
+    "tailwindcss": "^4"
+  }
+}
