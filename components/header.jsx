@@ -27,24 +27,34 @@ export default function Header() {
   useEffect(() => {
     const header = headerRef.current;
     let lastScrollY = window.scrollY;
+    let ticking = false;
 
-    const handleScroll = () => {
+    const updateHeaderPosition = () => {
       const currentScrollY = window.scrollY;
       const diff = currentScrollY - lastScrollY;
       const currentTop = parseFloat(getComputedStyle(header).top);
+      const headerHeight = header.offsetHeight;
 
       let newTop = currentTop - diff;
-
-      // Limit the header within 0 (visible) and -header height (hidden)
-      const headerHeight = header.offsetHeight;
       newTop = Math.max(-headerHeight, Math.min(0, newTop));
 
       header.style.top = `${newTop}px`;
       lastScrollY = currentScrollY;
+      ticking = false;
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeaderPosition);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {

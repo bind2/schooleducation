@@ -52,7 +52,9 @@ export default function StudentInformation() {
             className="absolute -top-5 left-0 flex w-full justify-center gap-2"
           >
             <Link
-              href={"/"}
+              href={"https://www.facebook.com"}
+              target="_blank"
+              aria-label="facebook"
               className="bg-orange-90 rounded-md border-2 px-6 py-2"
             >
               <Image
@@ -63,7 +65,9 @@ export default function StudentInformation() {
               />
             </Link>
             <Link
-              href={"/"}
+              href={"https://www.twitter.com"}
+              target="_blank"
+              aria-label="twitter"
               className="bg-orange-90 rounded-md border-2 px-6 py-2"
             >
               <Image
@@ -74,7 +78,9 @@ export default function StudentInformation() {
               />
             </Link>
             <Link
-              href={"/"}
+              href={"https://www.linkedin.com"}
+              target="_blank"
+              aria-label="linkedin"
               className="bg-orange-90 rounded-md border-2 px-6 py-2"
             >
               <Image

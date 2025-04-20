@@ -210,6 +210,7 @@ export default function Footer() {
               <Link
                 href={"https://www.facebook.com"}
                 target="_blank"
+                aria-label="facebook"
                 className="bg-orange-90 rounded-md border-2 p-2"
               >
                 <Image
@@ -222,6 +223,7 @@ export default function Footer() {
               <Link
                 href={"https://twitter.com"}
                 target="_blank"
+                aria-label="twitter"
                 className="bg-orange-90 rounded-md border-2 p-2"
               >
                 <Image
@@ -234,6 +236,7 @@ export default function Footer() {
               <Link
                 href={"https://www.linkedin.com"}
                 target="_blank"
+                aria-label="linkedin"
                 className="bg-orange-90 rounded-md border-2 p-2"
               >
                 <Image
