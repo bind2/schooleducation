@@ -152,7 +152,7 @@ export default function FreeStructure() {
           <div className="bg-absolute-white w-full overflow-x-auto rounded-lg border-2 p-6 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
             <div className="min-w-[800px] overflow-hidden">
               <div className="bg-orange-95 rounded-lg border-2 px-4 py-2">
-                <h3 className="text-2xl font-bold">Additional Services</h3>
+                <h2 className="text-2xl font-bold">Additional Services</h2>
               </div>
 
               <div className="bg-orange-99 mt-5 overflow-hidden rounded-lg border-2">
