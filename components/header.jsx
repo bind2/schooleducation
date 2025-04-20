@@ -133,7 +133,7 @@ export default function Header() {
               height={32}
               className="absolute -right-2 -bottom-[40%] z-10 md:right-[100px] lg:right-[200px] xl:right-[300px]"
             />
-            <Link href={"/d"} className="z-10 flex items-center gap-1">
+            <Link href={"/admissions"} className="z-10 flex items-center gap-1">
               <span className="text-sm font-medium md:text-[16px]">
                 Addmission is Open, Grab your seat now
               </span>
