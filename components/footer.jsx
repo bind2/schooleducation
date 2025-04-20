@@ -42,9 +42,9 @@ export default function Footer() {
               <div className="flex flex-col gap-3">
                 <Link
                   href={`mailto:deepak7890bind@gmail.com`}
-                  className="flex items-center gap-2 hover:underline"
+                  className="flex items-center gap-2 hover:underline group"
                 >
-                  <div className="bg-orange-97 rounded-sm border-2 p-1">
+                  <div className="bg-orange-97 group-hover:bg-orange-90 rounded-sm border-2 p-1 transition-colors duration-300">
                     <Image
                       src={"svg/mail.svg"}
                       alt="mail icon"
@@ -54,11 +54,12 @@ export default function Footer() {
                   </div>
                   <span>deepak7890bind@gmail.com</span>
                 </Link>
+
                 <Link
                   href={`tel:+917722072980`}
-                  className="flex items-center gap-2 hover:underline"
+                  className="flex items-center gap-2 hover:underline group"
                 >
-                  <div className="bg-orange-97 rounded-sm border-2 p-1">
+                  <div className="bg-orange-97 group-hover:bg-orange-90 rounded-sm border-2 p-1 transition-colors duration-300">
                     <Image
                       src={"svg/phone.svg"}
                       alt="phone icon"
@@ -68,14 +69,15 @@ export default function Footer() {
                   </div>
                   <span>+91 7722072980</span>
                 </Link>
+
                 <Link
                   href="https://www.google.com/maps"
                   target="_blank"
-                  className="flex items-center gap-2 hover:underline"
+                  className="flex items-center gap-2 hover:underline group"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
-                  <div className="bg-orange-97 rounded-sm border-2 p-1">
+                  <div className="bg-orange-97 group-hover:bg-orange-90 rounded-sm border-2 p-1 transition-colors duration-300">
                     <Image
                       src={"svg/location-mark.svg"}
                       alt="location icon"
@@ -211,7 +213,7 @@ export default function Footer() {
                 href={"https://www.facebook.com"}
                 target="_blank"
                 aria-label="facebook"
-                className="bg-orange-90 rounded-md border-2 p-2"
+                className="bg-orange-90 hover:bg-orange-80 rounded-md border-2 p-2 transition-colors duration-300"
               >
                 <Image
                   src={"svg/facebook.svg"}
@@ -224,7 +226,7 @@ export default function Footer() {
                 href={"https://twitter.com"}
                 target="_blank"
                 aria-label="twitter"
-                className="bg-orange-90 rounded-md border-2 p-2"
+                className="bg-orange-90 hover:bg-orange-80 rounded-md border-2 p-2 transition-colors duration-300"
               >
                 <Image
                   src={"svg/twitter.svg"}
@@ -237,7 +239,7 @@ export default function Footer() {
                 href={"https://www.linkedin.com"}
                 target="_blank"
                 aria-label="linkedin"
-                className="bg-orange-90 rounded-md border-2 p-2"
+                className="bg-orange-90 hover:bg-orange-80 rounded-md border-2 p-2 transition-colors duration-300"
               >
                 <Image
                   src={"svg/linkedin.svg"}

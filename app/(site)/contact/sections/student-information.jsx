@@ -23,7 +23,6 @@ export default function StudentInformation() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ ...sinfo, selectedProgram });
   };
 
   const sectionHeadData = {

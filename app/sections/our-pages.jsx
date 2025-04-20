@@ -3,26 +3,31 @@
 import SectionHead from "@/components/section-head";
 import { ArrowRight } from "lucide-react";
 import { useInView, motion } from "motion/react";
+import Link from "next/link";
 import React, { useRef } from "react";
 
 export default function OurPages() {
   const cardData = [
     {
+      url: "/about-us",
       title: "About Us",
       content:
         "Discover our Mission, Values, and our unwavering commitment to providing the best learning experience for your child. Learn about our passionate educators and our engaging approach to early education.",
     },
     {
+      url: "/academics",
       title: "Academics",
       content:
         "Delve into our comprehensive academic programs designed to stimulate young minds, foster creativity, and encourage a love for learning. Explore our well-rounded curriculum that nurtures both intellectual and social development.",
     },
     {
+      url: "/student-life",
       title: "Student Life",
       content:
         "Peek into the vibrant and enriching world of Student Life at Little Learners Academy. Discover the array of extracurricular activities, arts and crafts, sports, and social events that make our school experience truly memorable.",
     },
     {
+      url: "/admissions",
       title: "Admissions",
       content:
         "Learn about our Enrollment Process and how to secure your child's place at Little Learners Academy. Find information about our admission requirements, application deadlines, and available spaces.",
@@ -41,7 +46,7 @@ export default function OurPages() {
       <div className="container">
         <SectionHead {...sectionHeadData} />
         <div className="mt-20 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {cardData.map(({ title, content }, index) => {
+          {cardData.map(({ url, title, content }, index) => {
             const ref = useRef(null);
             const inView = useInView(ref, { once: false });
             return (
@@ -75,9 +80,27 @@ export default function OurPages() {
                 </div>
 
                 <p className="mt-10 text-center">{content}</p>
-                <button className="bg-orange-90 mt-10 flex w-full cursor-pointer items-center justify-center rounded-lg border-2 p-3 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
-                  Learn More <ArrowRight size={16} />
-                </button>
+
+                <motion.button
+                  whileHover="hover"
+                  className="bg-orange-90 hover:bg-orange-80 mt-10 w-full rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)] transition-colors duration-300"
+                >
+                  <Link
+                    href={url}
+                    className="flex h-full w-full items-center justify-center gap-1 p-3"
+                  >
+                    <span>Learn More</span>
+                    <motion.span
+                      variants={{
+                        hover: { x: 4 },
+                        initial: { x: 0 },
+                      }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <ArrowRight size={16} />
+                    </motion.span>
+                  </Link>
+                </motion.button>
               </motion.div>
             );
           })}

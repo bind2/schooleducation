@@ -13,7 +13,6 @@ const Accordion = ({ items = [] }) => {
   };
 
   if (!Array.isArray(items)) {
-    console.error("Accordion items must be an array");
     return null;
   }
 

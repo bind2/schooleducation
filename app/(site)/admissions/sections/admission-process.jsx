@@ -61,8 +61,7 @@ export default function AdmissionProcess() {
                 className="bg-absolute-white relative h-full rounded-lg border-2 p-7 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]"
               >
                 <div
-                  // style={{ transform: "translateX(-50%)" }}
-                  className="bg-absolute-white font-raleway absolute -top-25 left-[40%] flex -translate-x-[40%] transform items-center justify-center rounded-lg border-2 px-4 py-2 text-4xl font-extrabold [box-shadow:4px_4px_0px_1px_var(--absolute-black)] md:left-0"
+                  className="bg-absolute-white font-raleway absolute -top-25 left-[50%] flex -translate-x-[50%] transform items-center justify-center rounded-lg border-2 px-4 py-2 text-4xl font-extrabold [box-shadow:4px_4px_0px_1px_var(--absolute-black)] md:left-0"
                 >
                   {`0${i + 1}`}
                   <div className="bg-orange-80 absolute top-full h-10 px-1">
