@@ -57,7 +57,7 @@ export default function WhatStudentLearn() {
         <div className="mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cardData.map(({ image, title, description }, i) => {
             const ref = useRef(null);
-            const inView = useInView(ref, { once: false });
+            const inView = useInView(ref, { once: true });
             return (
               <motion.div
                 ref={ref}

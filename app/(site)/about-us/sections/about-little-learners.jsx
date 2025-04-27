@@ -6,7 +6,7 @@ import React, { useRef } from "react";
 
 export default function AboutLittleLearners() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
   return (
     <section>
       <div className="container">

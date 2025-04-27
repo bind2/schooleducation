@@ -1,8 +1,12 @@
+'use client'
+
 import Card from "@/components/card";
 import SectionHead from "@/components/section-head";
+import useHeaderStore from "@/stores/use-header.store";
 import React from "react";
 
 export default function OurSpecialFeatures() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const cardData = [
     {
       icon: "svg/graduation-hat.svg",
@@ -49,7 +53,7 @@ export default function OurSpecialFeatures() {
       "Our kinder garden school provides a nurturing and stimulating environment, fostering a love for learning that lasts a lifetime. Join us as we embark on an exciting educational journey together!",
   };
   return (
-    <section id="special-features" className="scroll-mt-35">
+    <section id="special-features" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 

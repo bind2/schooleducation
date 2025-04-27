@@ -24,7 +24,7 @@ const Accordion = ({ items = [] }) => {
         items.map((item, index) => {
           const isOpen = openIndex === index;
           const ref = useRef(null);
-          const inView = useInView(ref, { once: false });
+          const inView = useInView(ref, { once: true });
           return (
             <motion.div
               ref={ref}

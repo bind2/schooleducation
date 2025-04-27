@@ -9,8 +9,8 @@ export default function FreeStructure() {
   const tuitionRef = useRef(null);
   const serviceRef = useRef(null);
 
-  const inViewTuition = useInView(tuitionRef, { once: false });
-  const inViewServices = useInView(serviceRef, { once: false });
+  const inViewTuition = useInView(tuitionRef, { once: true });
+  const inViewServices = useInView(serviceRef, { once: true });
 
   const tableHeaders = [
     "Program",

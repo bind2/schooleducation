@@ -9,11 +9,13 @@ import { ArrowLeft } from "lucide-react";
 import SectionHead from "@/components/section-head";
 import { useInView, motion } from "motion/react";
 import Image from "next/image";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function AwardsAndRecognitions() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const swiperRef = useRef(null);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
   const cardData = [
     {
       icon: "svg/pie-chart-icon.svg",
@@ -48,7 +50,7 @@ export default function AwardsAndRecognitions() {
       "Little Learners Academy takes pride in our commitment to delivering high-quality education and outstanding student experiences. We are honored to have received various awards and recognitions for our dedication to early childhood education. These accolades reflect our team's relentless efforts in creating an exceptional learning environment for our students.",
   };
   return (
-    <section id="awards-and-recognitions" className="scroll-mt-35">
+    <section id="awards-and-recognitions" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 
@@ -65,12 +67,7 @@ export default function AwardsAndRecognitions() {
             }}
             slidesPerView={1}
             spaceBetween={16}
-            // loop={true}
             speed={1000} // smooth slide
-            // autoplay={{
-            //   delay: 2500,
-            //   disableOnInteraction: false,
-            // }}
             navigation={{
               nextEl: ".swiper-button-next",
               prevEl: ".swiper-button-prev",

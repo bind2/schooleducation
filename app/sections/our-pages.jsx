@@ -48,7 +48,8 @@ export default function OurPages() {
         <div className="mt-20 grid grid-cols-1 gap-6 md:grid-cols-2">
           {cardData.map(({ url, title, content }, index) => {
             const ref = useRef(null);
-            const inView = useInView(ref, { once: false });
+            const inView = useInView(ref, { once: true });
+
             return (
               <motion.div
                 ref={ref}

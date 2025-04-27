@@ -1,15 +1,17 @@
 "use client";
 
+import useHeaderStore from "@/stores/use-header.store";
 import { useInView, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef } from "react";
 
 export default function GetInTouch() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
   return (
-    <section id="map-and-direction" className="scroll-mt-35">
+    <section id="map-and-direction" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <motion.div
           ref={ref}

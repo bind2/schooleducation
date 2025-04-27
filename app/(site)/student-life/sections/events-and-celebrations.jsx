@@ -60,7 +60,7 @@ export default function EventsAndCelebrations() {
             const isEven = i % 2 === 0;
             const translateY = isEven ? "-100%" : "-45%"; // Zig-zag: even cards go up more
             const ref = useRef(null);
-            const inView = useInView(ref, { once: false });
+            const inView = useInView(ref, { once: true });
 
             return (
               <motion.div

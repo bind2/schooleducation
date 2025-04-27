@@ -7,14 +7,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, X } from "lucide-react";
 import CustomMenu from "./custom-menu";
 import { motion, AnimatePresence, useInView } from "motion/react";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function Header() {
+  const setHeight = useHeaderStore((state) => state.setHeight);
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   const headerRef = useRef(null);
   const scrollRef = useRef(null);
-  const inView = useInView(scrollRef, { once: false });
+  const inView = useInView(scrollRef, { once: true });
 
   const navLinks = [
     { name: "Home", url: "/" },
@@ -90,6 +92,24 @@ export default function Header() {
     };
   }, []);
 
+  useEffect(() => {
+    if (headerRef.current) {
+      setHeight(headerRef.current.offsetHeight);
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (headerRef.current) {
+        setHeight(headerRef.current.offsetHeight);
+      }
+    });
+
+    resizeObserver.observe(headerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [setHeight]);
+
   return (
     <header
       ref={headerRef}
@@ -133,7 +153,12 @@ export default function Header() {
               height={32}
               className="absolute -right-2 -bottom-[40%] z-10 md:right-[100px] lg:right-[200px] xl:right-[300px]"
             />
-            <Link href={"/admissions"} className="z-10 flex items-center gap-1">
+            <Link
+              href={"/admissions"}
+              aria-label="Admissions"
+              prefetch={true}
+              className="z-10 flex items-center gap-1"
+            >
               <span className="text-sm font-medium md:text-[16px]">
                 Addmission is Open, Grab your seat now
               </span>
@@ -163,6 +188,7 @@ export default function Header() {
                 <li key={index} className="inline-block h-full border-l-2">
                   <Link
                     href={url}
+                    aria-label={name}
                     className={`flex h-full items-center p-2 ${
                       url === pathname ? "bg-orange-95" : ""
                     }`}
@@ -174,6 +200,7 @@ export default function Header() {
               <li className="inline-block h-full border-l-2">
                 <Link
                   href={"/contact"}
+                  aria-label="Contact"
                   className="bg-orange-75 flex h-full items-center p-2"
                 >
                   Contact
@@ -208,7 +235,7 @@ export default function Header() {
 
             {/* Side Sheet */}
             <motion.div
-              className="fixed top-0 right-0 z-50 h-full w-full bg-white p-6 shadow-lg"
+              className="fixed top-0 right-0 z-50 h-full w-full bg-white px-4 pt-2 shadow-lg"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}

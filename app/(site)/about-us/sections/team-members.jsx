@@ -4,8 +4,10 @@ import SectionHead from "@/components/section-head";
 import Image from "next/image";
 import React, { useRef } from "react";
 import { useInView, motion } from "motion/react";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function TeamMembers() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const sectionHeadData = {
     tag: "Our Teachers With Experties",
     title: "Our Team Members",
@@ -13,14 +15,14 @@ export default function TeamMembers() {
       "At Little Learners Academy, our teaching team is the heart of our educational journey. We take great pride in employing highly qualified and passionate educators who possess a deep understanding of early childhood development.",
   };
   return (
-    <section id="teachers" className="scroll-mt-35">
+    <section id="teachers" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 
         <div className="mt-20 grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
           {Array.from({ length: 6 }).map((_, i) => {
             const ref = useRef(null);
-            const inView = useInView(ref, { once: false });
+            const inView = useInView(ref, { once: true });
             return (
               <motion.div
                 ref={ref}

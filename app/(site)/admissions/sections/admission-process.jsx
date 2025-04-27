@@ -50,7 +50,7 @@ export default function AdmissionProcess() {
         <div className="mt-50 grid grid-cols-1 gap-x-6 gap-y-35 md:grid-cols-2 lg:grid-cols-3">
           {cardData.map(({ title, description }, i) => {
             const ref = useRef(null);
-            const inView = useInView(ref, { once: false });
+            const inView = useInView(ref, { once: true });
             return (
               <motion.div
                 ref={ref}

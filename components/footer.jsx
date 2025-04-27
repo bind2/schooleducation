@@ -9,7 +9,7 @@ import { useInView, motion } from "motion/react";
 export default function Footer() {
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
 
   return (
     <footer>

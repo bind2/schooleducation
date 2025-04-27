@@ -50,6 +50,10 @@
   --font-raleway: var(--font-raleway);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--orange-97);
   color: var(--absolute-black);
@@ -90,7 +94,32 @@ h3 {
     scrollbar-width: none;
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
+}
+
+
+
+/* Base Scrollbar (Always there, just transparent when not hovered) */
+.scrollbar-container {
+  overflow-y: scroll;
+}
+
+/* Custom scrollbar style */
+.scrollbar-container::-webkit-scrollbar {
+  width: 6px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.scrollbar-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0); /* invisible initially */
+  border-radius: 4px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.scrollbar-container:hover::-webkit-scrollbar-thumb {
+  background-color: var(--orange-70); /* visible on hover */
+}
+
+/* Optional hover track */
+.scrollbar-container::-webkit-scrollbar-track {
+  background: transparent;
 }

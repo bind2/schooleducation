@@ -34,7 +34,7 @@ const fadeLeft = {
 
 export default function Hero() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.4 });
+  const isInView = useInView(ref, { once: true});
   return (
     <section>
       <div className="container">
@@ -47,21 +47,22 @@ export default function Hero() {
         >
           <motion.div
             variants={fadeLeft}
-            className="bg-orange-80 relative flex w-full items-center justify-center"
+            className="bg-orange-80 relative flex w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] items-center justify-center"
           >
             <Image
               src={`svg/svg-hero.svg`}
               width={100}
               height={100}
+              priority
               alt="svg-hero"
-              className="absolute h-[80%] w-[80%]"
+              className="absolute w-[80%] h-[80%]"
             />
             <Image
               src={`/image/hero-image.png`}
-              width={100}
-              height={100}
+              fill
+              priority
               alt="hero-img"
-              className="h-full w-full object-cover"
+              className="object-cover"
             />
 
             {/* node circles */}

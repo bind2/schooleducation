@@ -9,8 +9,10 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
 import SectionHead from "@/components/section-head";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function OurRoomsGallery() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const [selected, setSelected] = useState("All");
 
   const tabs = [
@@ -88,7 +90,7 @@ export default function OurRoomsGallery() {
   };
 
   return (
-    <section id="gallery" className="scroll-mt-35">
+    <section id="gallery" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 
@@ -140,7 +142,7 @@ export default function OurRoomsGallery() {
 
 const TabContent = ({ tab, nextClass, prevClass }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
 
   return (
     <motion.div

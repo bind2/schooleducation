@@ -5,7 +5,7 @@ import React, { useRef } from "react";
 
 export default function SectionHead({ tag, title, description }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false });
+  const isInView = useInView(ref, { once: true });
   return (
     <motion.div
       ref={ref}

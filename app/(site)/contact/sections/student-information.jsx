@@ -6,13 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { useInView, motion } from "motion/react";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function StudentInformation() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
 
   const mediaIconRef = useRef(null);
-  const inViewMediaIcon = useInView(mediaIconRef, { once: false });
+  const inViewMediaIcon = useInView(mediaIconRef, { once: true });
 
   const [selectedProgram, setSelectedProgram] = useState("");
   const [sinfo, setsinfo] = useState({ parentName: "" });
@@ -32,7 +34,7 @@ export default function StudentInformation() {
       "If you have specific questions or wish to request more information about Little Learners Academy, please complete the contact form below. Kindly provide the following details to help us better understand your needs",
   };
   return (
-    <section id="information" className="scroll-mt-35">
+    <section id="information" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 
@@ -194,7 +196,7 @@ export default function StudentInformation() {
             </div>
             <button
               type="submit"
-              className="bg-orange-75 mt-10 w-full rounded-lg border-2 p-4"
+              className="bg-orange-75 mt-10 w-full rounded-lg border-2 p-4 cursor-pointer"
             >
               Submit
             </button>

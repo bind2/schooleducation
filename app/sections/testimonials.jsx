@@ -9,11 +9,13 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import SectionHead from "@/components/section-head";
 import { useInView, motion } from "motion/react";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function Testimonials() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const swiperRef = useRef(null);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
 
   const sectionHeadData = {
     tag: "Their Happy Words 🤗",
@@ -23,7 +25,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="scroll-mt-35">
+    <section id="testimonials" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 

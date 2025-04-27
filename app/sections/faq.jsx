@@ -1,8 +1,12 @@
+'use client'
+
 import Accordion from "@/components/accordion";
 import SectionHead from "@/components/section-head";
+import useHeaderStore from "@/stores/use-header.store";
 import React from "react";
 
 export default function Faq() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const accordionData1 = [
     {
       title: "What are the school hours at Little Learners Academy?",
@@ -48,7 +52,7 @@ export default function Faq() {
       "Find all the essential information you need in our FAQ section, designed to address the most frequently asked questions and help you make informed decisions for your child's education.",
   };
   return (
-    <section id="faq" className="scroll-mt-35">
+    <section id="faq" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
         <div className="mt-20 grid grid-cols-1 gap-5 md:grid-cols-2">

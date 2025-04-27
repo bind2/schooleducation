@@ -4,8 +4,10 @@ import SectionHead from "@/components/section-head";
 import Image from "next/image";
 import React, { useRef } from "react";
 import { useInView, motion } from "motion/react";
+import useHeaderStore from "@/stores/use-header.store";
 
 export default function MissionAndVisons() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const sectionHeadData = {
     tag: "Mission & Visions",
     title: "Our Mission & Visions",
@@ -28,14 +30,14 @@ export default function MissionAndVisons() {
     },
   ];
   return (
-    <section id="mission-and-vision" className="scroll-mt-35">
+    <section id="mission-and-vision" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
       <div className="container">
         <SectionHead {...sectionHeadData} />
 
         <div className="mt-20 grid grid-cols-1 gap-6 md:grid-cols-2">
           {cardData.map(({ icon, title, description }, i) => {
             const ref = useRef(null);
-            const inView = useInView(ref, { once: false });
+            const inView = useInView(ref, { once: true });
             return (
               <motion.div
                 ref={ref}
@@ -43,7 +45,7 @@ export default function MissionAndVisons() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 key={i}
-                className="bg-absolute-white rounded-lg border-2 p-12 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]"
+                className="bg-absolute-white rounded-lg border-2 p-8 lg:p-12 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]"
               >
                 <div className="mb-12 flex items-center justify-between">
                   <span className="text-4xl font-bold">{title}</span>

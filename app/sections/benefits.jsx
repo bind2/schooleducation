@@ -2,9 +2,11 @@
 
 import Card from "@/components/card";
 import SectionHead from "@/components/section-head";
+import useHeaderStore from "@/stores/use-header.store";
 import React from "react";
 
 export default function Benefits() {
+  const headerHeight = useHeaderStore((state) => state.height);
   const cardData = [
     {
       icon: "svg/graduation-hat.svg",
@@ -52,7 +54,11 @@ export default function Benefits() {
   };
 
   return (
-    <section id="benefits" className="scroll-mt-35">
+    <section
+      id="benefits"
+      style={{ scrollMarginTop: `${headerHeight + 16}px` }}
+      // className="scroll-mt-35"
+    >
       <div className="container">
         <SectionHead {...sectionHeadData} />
         <div className="mt-20 grid grid-cols-1 gap-x-6 gap-y-15 sm:grid-cols-2 lg:grid-cols-3">

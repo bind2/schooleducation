@@ -6,7 +6,7 @@ import { useInView, motion } from "motion/react";
 
 export default function OurAcademicApproach() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
+  const inView = useInView(ref, { once: true });
   return (
     <section>
       <div className="container">

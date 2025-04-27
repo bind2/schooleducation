@@ -37,8 +37,8 @@ const Timeline = () => {
   const endRef = useRef(null);
   const [lineStyle, setLineStyle] = useState({ top: 0, height: 0 });
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false });
-  const inViewLine = useInView(lineRef, { once: false });
+  const inView = useInView(ref, { once: true });
+  const inViewLine = useInView(lineRef, { once: true });
 
   useEffect(() => {
     if (startRef.current && endRef.current && lineRef.current) {
@@ -52,6 +52,10 @@ const Timeline = () => {
       setLineStyle({ top, height });
     }
   }, []);
+
+  
+  
+  
 
   return (
     <motion.div
@@ -80,7 +84,7 @@ const Timeline = () => {
             const isLast = index === timelineData.length - 1;
 
             const timelineRef = useRef(null);
-            const inViewTimeline = useInView(timelineRef, { once: false });
+            const inViewTimeline = useInView(timelineRef, { once: true });
 
             return (
               <motion.div
