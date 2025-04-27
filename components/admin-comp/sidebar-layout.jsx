@@ -202,7 +202,7 @@ export function SidebarLayout({ children }) {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen flex-1">
+      <div className="min-h-screen flex-1 w-full">
         <div className="sticky top-0 left-0 z-10 flex h-[60px] w-full items-center justify-between border-b bg-white p-2">
           <button
             className="rounded-md p-2 transition-all duration-200 hover:cursor-pointer hover:bg-gray-300"

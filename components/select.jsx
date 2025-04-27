@@ -55,13 +55,13 @@ export default function Select({ value, onChange }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.1, type: "tween" }}
-              className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border-2 bg-orange-99 shadow-md"
+              className="bg-orange-99 absolute z-50 mt-1 w-full overflow-hidden rounded-md border-2 shadow-md"
             >
               {options.map((option) => (
                 <li
                   key={option}
                   onClick={() => handleSelect(option)}
-                  className="flex cursor-pointer items-center justify-between px-4 py-3 transition-all hover:bg-orange-95"
+                  className="hover:bg-orange-95 flex cursor-pointer items-center justify-between px-4 py-3 transition-all"
                 >
                   <span>{option}</span>
                   {value === option && <Check size={16} />}
