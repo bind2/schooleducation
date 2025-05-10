@@ -85,9 +85,8 @@ export default function GetInTouch() {
                 </div>
                 <span>Somewhere in the World</span>
               </Link>
-              <Link
-                href={`mailto:deepak7890bind@gmail.com`}
-                className="flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
+              <div
+                className="flex w-full items-center gap-2 rounded-lg border-2 p-2"
               >
                 <div className="bg-orange-97 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
                   <Image
@@ -98,7 +97,7 @@ export default function GetInTouch() {
                   />
                 </div>
                 <span>Office Hours - 9am - 6 pm</span>
-              </Link>
+              </div>
             </div>
           </div>
         </motion.div>

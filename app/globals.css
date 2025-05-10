@@ -90,36 +90,25 @@ h3 {
 
 @layer utilities {
   .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
   }
 
-}
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 
+  .scrollbar-show {
+    scrollbar-width: thin;
+  }
 
+  .scrollbar-show::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
 
-/* Base Scrollbar (Always there, just transparent when not hovered) */
-.scrollbar-container {
-  overflow-y: scroll;
-}
-
-/* Custom scrollbar style */
-.scrollbar-container::-webkit-scrollbar {
-  width: 6px;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-.scrollbar-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0); /* invisible initially */
-  border-radius: 4px;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-.scrollbar-container:hover::-webkit-scrollbar-thumb {
-  background-color: var(--orange-70); /* visible on hover */
-}
-
-/* Optional hover track */
-.scrollbar-container::-webkit-scrollbar-track {
-  background: transparent;
+  .scrollbar-show::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
 }

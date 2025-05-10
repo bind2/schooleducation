@@ -3,19 +3,40 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-export const Tooltip = ({ children, content, side = "top" }) => {
+export const Tooltip = ({ children, content, side = "right" }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
   const handleClick = () => setIsHovered(false);
 
+
   // Define positioning based on side prop
   const tooltipPosition = {
-    top: "bottom-full left-1/2 mb-2 -translate-x-1/2",
-    bottom: "top-full left-1/2 mt-2 -translate-x-1/2",
-    left: "right-full top-1/2 mr-2 -translate-y-1/2",
-    right: "left-full top-1/2 ml-2 -translate-y-1/2",
+    top: {
+      bottom: "100%",
+      left: "50%",
+      marginBottom: "8px",
+      transform: "translateX(-50%)",
+    },
+    bottom: {
+      top: "100%",
+      left: "50%",
+      marginTop: "8px",
+      transform: "translateX(-50%)",
+    },
+    left: {
+      right: "100%",
+      top: "50%",
+      marginRight: "8px",
+      transform: "translateY(-50%)",
+    },
+    right: {
+      left: "100%",
+      top: "15%",
+      marginLeft: "8px",
+      transform: "translateY(-50%)",
+    },
   };
 
   // Define the initial and exit animation for each side
@@ -49,7 +70,8 @@ export const Tooltip = ({ children, content, side = "top" }) => {
             animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             exit={tooltipExitAnimation[side]}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className={`absolute z-50 rounded-md bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white shadow-lg ${tooltipPosition[side]}`} // Position based on the side
+            className={`absolute z-50 rounded-md bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white shadow-lg`} // Position based on the side
+            style={tooltipPosition[side]}
           >
             {content}
           </motion.div>

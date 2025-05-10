@@ -8,6 +8,7 @@ import { ArrowRight, X } from "lucide-react";
 import CustomMenu from "./custom-menu";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import useHeaderStore from "@/stores/use-header.store";
+import { XIcon } from "lucide-react";
 
 export default function Header() {
   const setHeight = useHeaderStore((state) => state.setHeight);
@@ -17,9 +18,11 @@ export default function Header() {
   const headerRef = useRef(null);
   const scrollRef = useRef(null);
   const inView = useInView(scrollRef, { once: true });
+  const [announceBar, setAnnounceBar] = useState(true);
 
   const navLinks = [
     { name: "Home", url: "/" },
+    { name: "Dashboard", url: "/admin" },
     { name: "About Us", url: "/about-us" },
     { name: "Academics", url: "/academics" },
     { name: "Admissions", url: "/admissions" },
@@ -75,7 +78,7 @@ export default function Header() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
+      if (window.innerWidth < 1024) {
         setIsOpen(false);
       }
     };
@@ -124,47 +127,55 @@ export default function Header() {
           className="flex flex-col gap-2 py-2"
         >
           {/* Announcement Banner */}
-          <div className="bg-orange-90 relative flex items-center justify-center overflow-hidden rounded-sm border-2 p-2">
-            <Image
-              src={`svg/header-left-icon.svg`}
-              alt="svg-left"
-              width={60}
-              height={60}
-              className="absolute top-0 left-0 h-[60px] w-[60px] md:top-auto md:-left-5 xl:h-[160px] xl:w-[160px]"
-            />
-            <Image
-              src={"svg/header-right-icon.svg"}
-              alt="svg-right"
-              width={60}
-              height={60}
-              className="absolute top-0 right-0 h-[60px] w-[60px] md:top-auto md:-right-5 xl:h-[160px] xl:w-[160px]"
-            />
-            <Image
-              src={"svg/header-circle-icon.svg"}
-              alt="svg-circle-left"
-              width={32}
-              height={32}
-              className="absolute -top-[40%] left-0 z-10 md:left-[100px] lg:left-[200px] xl:-top-[70%] xl:left-[300px] xl:h-[50px] xl:w-[50px]"
-            />
-            <Image
-              src={"svg/header-circle-icon.svg"}
-              alt="svg-circle-right"
-              width={32}
-              height={32}
-              className="absolute -right-2 -bottom-[40%] z-10 md:right-[100px] lg:right-[200px] xl:right-[300px]"
-            />
-            <Link
-              href={"/admissions"}
-              aria-label="Admissions"
-              prefetch={true}
-              className="z-10 flex items-center gap-1"
-            >
-              <span className="text-sm font-medium md:text-[16px]">
-                Addmission is Open, Grab your seat now
+          {announceBar && (
+            <div className="bg-orange-90 relative flex items-center justify-center overflow-hidden rounded-sm border-2 p-2">
+              <Image
+                src={`svg/header-left-icon.svg`}
+                alt="svg-left"
+                width={60}
+                height={60}
+                className="absolute top-0 left-0 h-[60px] w-[60px] md:top-auto md:-left-5 xl:h-[160px] xl:w-[160px]"
+              />
+              <Image
+                src={"svg/header-right-icon.svg"}
+                alt="svg-right"
+                width={60}
+                height={60}
+                className="absolute top-0 right-0 h-[60px] w-[60px] md:top-auto md:-right-5 xl:h-[160px] xl:w-[160px]"
+              />
+              <Image
+                src={"svg/header-circle-icon.svg"}
+                alt="svg-circle-left"
+                width={32}
+                height={32}
+                className="absolute -top-[40%] left-0 z-10 md:left-[100px] lg:left-[200px] xl:-top-[70%] xl:left-[300px] xl:h-[50px] xl:w-[50px]"
+              />
+              <Image
+                src={"svg/header-circle-icon.svg"}
+                alt="svg-circle-right"
+                width={32}
+                height={32}
+                className="absolute -right-2 -bottom-[40%] z-10 md:right-[100px] lg:right-[200px] xl:right-[300px]"
+              />
+              <Link
+                href={"/admissions"}
+                aria-label="Admissions"
+                prefetch={true}
+                className="z-10 flex items-center gap-1"
+              >
+                <span className="text-sm font-medium md:text-[16px]">
+                  Addmission is Open, Grab your seat now
+                </span>
+                <ArrowRight size={14} className="md:h-[16px] md:w-[16px]" />
+              </Link>
+              <span
+                className="hover:bg-orange-95 absolute right-2 cursor-pointer rounded-full p-1 transition-colors duration-300"
+                onClick={() => setAnnounceBar(false)}
+              >
+                <XIcon size={18} />
               </span>
-              <ArrowRight size={14} className="md:h-[16px] md:w-[16px]" />
-            </Link>
-          </div>
+            </div>
+          )}
 
           {/* Main Header Bar */}
           <div className="bg-absolute-white flex w-full justify-between overflow-hidden rounded-sm border-2">
@@ -183,7 +194,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <ul className="hidden md:flex">
+            <ul className="hidden lg:flex">
               {navLinks.map(({ name, url }, index) => (
                 <li key={index} className="inline-block h-full border-l-2">
                   <Link
@@ -211,7 +222,7 @@ export default function Header() {
             {/* Mobile Menu Icon */}
             <div
               onClick={toggleMenu}
-              className="bg-orange-95 inline-flex min-h-full items-center justify-center border-l-2 px-[30px] md:hidden"
+              className="bg-orange-95 inline-flex min-h-full items-center justify-center border-l-2 px-[30px] lg:hidden"
             >
               <CustomMenu size={24} />
             </div>

@@ -10,6 +10,7 @@ import { User } from "lucide-react";
 import Image from "next/image";
 import { ChevronsUpDown } from "lucide-react";
 import { Tooltip } from "../tooltip";
+import { Home } from "lucide-react";
 
 export function SidebarLayout({ children }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -45,6 +46,11 @@ export function SidebarLayout({ children }) {
 
   const navItems = [
     {
+      icon: <Home size={18}/>,
+      label: 'Home',
+      url: '/'
+    },
+    {
       icon: <LayoutDashboard size={18} />,
       label: "Dashboard",
       url: "/admin",
@@ -64,17 +70,17 @@ export function SidebarLayout({ children }) {
             <motion.div
               key={isMobile ? "mobile" : "desktop"}
               initial={
-                isMobile ? { x: "-100%" } : { width: isOpen ? "300px" : "57px" }
+                isMobile ? { x: "-100%" } : { width: isOpen ? "260px" : "57px" }
               }
               animate={
                 isMobile
                   ? { x: isOpen ? 0 : "-100%" }
-                  : { width: isOpen ? "300px" : "57px" }
+                  : { width: isOpen ? "260px" : "57px" }
               }
               exit={isMobile ? { x: "-100%" } : { width: "57px" }}
-              transition={{ duration: 0.2, type: "tween" }}
+              transition={{ duration: 0.3, type: "tween" }}
               className={`${isMobile ? "fixed" : "sticky"} top-0 left-0 z-40 flex h-screen flex-col border-r bg-white`}
-              style={{ width: isMobile ? "300px" : undefined }}
+              style={{ width: isMobile ? "260px" : undefined }}
             >
               <div className="w-full p-2">
                 <Link
@@ -87,7 +93,7 @@ export function SidebarLayout({ children }) {
                     width={40}
                     height={40}
                     priority
-                    className="min-h-10 min-w-10"
+                    className="max-h-10 min-h-10 max-w-10 min-w-10"
                   />
                   <motion.div
                     initial={false}
@@ -95,7 +101,7 @@ export function SidebarLayout({ children }) {
                       width: isOpen ? "100%" : 0,
                       opacity: isOpen ? 1 : 0,
                     }}
-                    transition={{ duration: 0.1 }}
+                    transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
                     <h1 className="font-bold whitespace-nowrap">
@@ -128,12 +134,13 @@ export function SidebarLayout({ children }) {
                           </div>
 
                           <motion.div
+                            key="ul-list"
                             initial={false}
                             animate={{
                               width: isOpen ? "100%" : 0,
                               opacity: isOpen ? 1 : 0,
                             }}
-                            transition={{ duration: 0.1 }}
+                            transition={{ duration: 0.2 }}
                             className="overflow-hidden"
                           >
                             <span className="whitespace-nowrap">{label}</span>
@@ -141,7 +148,10 @@ export function SidebarLayout({ children }) {
                         </Link>
                       ) : (
                         <Tooltip content={label} side="right">
-                          <Link href={url} className="flex items-center justify-center rounded-md cursor-pointer px-3 py-2 transition-all duration-200 hover:bg-gray-300">
+                          <Link
+                            href={url}
+                            className="flex cursor-pointer items-center justify-center rounded-md px-3 py-2 transition-all duration-200 hover:bg-gray-300"
+                          >
                             {icon}
                           </Link>
                         </Tooltip>
@@ -154,7 +164,7 @@ export function SidebarLayout({ children }) {
 
               <div className="w-full p-2">
                 <div
-                  className={`flex overflow-hidden cursor-pointer gap-2 rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-gray-300" : "p-0"} `}
+                  className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-gray-300" : "p-0"} `}
                 >
                   <Image
                     src="https://github.com/shadcn.png"
@@ -162,27 +172,33 @@ export function SidebarLayout({ children }) {
                     width={40}
                     height={40}
                     priority
-                    className="min-h-10 min-w-10 rounded-md"
+                    className="max-h-10 min-h-10 max-w-10 min-w-10 rounded-md"
                   />
-                  {isOpen && (
-                    <motion.div
-                      initial={false}
-                      animate={{
-                        width: isOpen ? "100%" : 0,
-                        opacity: isOpen ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.1 }}
-                      className="flex w-full items-center justify-between gap-4"
-                    >
-                      <div className="flex flex-col ">
-                        <span className="font-semibold">Deepak</span>
-                        <span className="text-sm truncate max-w-[200px]">
-                          deepak7890bind@gmail.com
-                        </span>
-                      </div>
-                      <ChevronsUpDown size={16} />
-                    </motion.div>
-                  )}
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        key="profile-info"
+                        initial={false}
+                        animate={{
+                          width: isOpen ? "100%" : 0,
+                          opacity: isOpen ? 1 : 0,
+                        }}
+                        transition={{ duration: 0.2 }}
+                        className="flex w-full items-center justify-between"
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-medium whitespace-nowrap">
+                            Deepak Bind
+                          </span>
+                          <span className="text-xs whitespace-nowrap">
+                            deepak7890bind@gmail.com
+                          </span>
+                        </div>
+                        <ChevronsUpDown size={16} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </motion.div>
@@ -202,7 +218,7 @@ export function SidebarLayout({ children }) {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen flex-1 w-full">
+      <div className="min-h-screen w-full flex-1">
         <div className="sticky top-0 left-0 z-10 flex h-[60px] w-full items-center justify-between border-b bg-white p-2">
           <button
             className="rounded-md p-2 transition-all duration-200 hover:cursor-pointer hover:bg-gray-300"

@@ -55,7 +55,7 @@ export default function Hero() {
               height={100}
               priority
               alt="svg-hero"
-              className="absolute w-[80%] h-[80%]"
+              className="absolute w-[80%] h-[80%] z-10"
             />
             <Image
               src={`/image/hero-image.png`}
