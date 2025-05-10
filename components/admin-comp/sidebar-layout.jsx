@@ -10,11 +10,12 @@ import { User } from "lucide-react";
 import Image from "next/image";
 import { ChevronsUpDown } from "lucide-react";
 import { Tooltip } from "../tooltip";
-import { Home } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function SidebarLayout({ children }) {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const storedIsOpen = localStorage.getItem("isOpen");
@@ -45,11 +46,6 @@ export function SidebarLayout({ children }) {
   }
 
   const navItems = [
-    {
-      icon: <Home size={18}/>,
-      label: 'Home',
-      url: '/'
-    },
     {
       icon: <LayoutDashboard size={18} />,
       label: "Dashboard",
@@ -84,8 +80,8 @@ export function SidebarLayout({ children }) {
             >
               <div className="w-full p-2">
                 <Link
-                  href={"/admin"}
-                  className={`flex cursor-pointer items-center gap-2 rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-gray-300" : "p-0"} `}
+                  href={"/"}
+                  className={`flex cursor-pointer items-center gap-2 rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-orange-90" : "p-0"} `}
                 >
                   <Image
                     src={"/svg/logo.svg"}
@@ -114,57 +110,64 @@ export function SidebarLayout({ children }) {
               {/* <ScrollArea> */}
               <div className="h-full p-2">
                 <ul>
-                  {navItems.map(({ label, url, icon }, index) => (
-                    <li
-                      key={index}
-                      className="block w-full"
-                      onClick={() => {
-                        if (isMobile) {
-                          toggleSidebar();
-                        }
-                      }}
-                    >
-                      {isOpen ? (
-                        <Link
-                          href={url}
-                          className="flex w-full gap-2 rounded-md px-3 py-2 transition-all duration-300 hover:bg-gray-200"
-                        >
-                          <div className="flex items-center justify-center rounded-md">
-                            {icon}
-                          </div>
+                  {navItems.map(({ label, url, icon }, index) => {
+                    const isActive = (url) => {
+                      if (url === "/admin") return pathname === url;
+                      return pathname === url || pathname.startsWith(url + "/");
+                    };
 
-                          <motion.div
-                            key="ul-list"
-                            initial={false}
-                            animate={{
-                              width: isOpen ? "100%" : 0,
-                              opacity: isOpen ? 1 : 0,
-                            }}
-                            transition={{ duration: 0.2 }}
-                            className="overflow-hidden"
-                          >
-                            <span className="whitespace-nowrap">{label}</span>
-                          </motion.div>
-                        </Link>
-                      ) : (
-                        <Tooltip content={label} side="right">
+                    return (
+                      <li
+                        key={index}
+                        className="block w-full"
+                        onClick={() => {
+                          if (isMobile) {
+                            toggleSidebar();
+                          }
+                        }}
+                      >
+                        {isOpen ? (
                           <Link
                             href={url}
-                            className="flex cursor-pointer items-center justify-center rounded-md px-3 py-2 transition-all duration-200 hover:bg-gray-300"
+                            className={`hover:bg-orange-90 flex w-full gap-2 rounded-md px-3 py-2 transition-all duration-300 ${isActive(url) ? "bg-orange-90" : ""}`}
                           >
-                            {icon}
+                            <div className="flex items-center justify-center rounded-md">
+                              {icon}
+                            </div>
+
+                            <motion.div
+                              key="ul-list"
+                              initial={false}
+                              animate={{
+                                width: isOpen ? "100%" : 0,
+                                opacity: isOpen ? 1 : 0,
+                              }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <span className="whitespace-nowrap">{label}</span>
+                            </motion.div>
                           </Link>
-                        </Tooltip>
-                      )}
-                    </li>
-                  ))}
+                        ) : (
+                          <Tooltip content={label} side="right">
+                            <Link
+                              href={url}
+                              className={`hover:bg-orange-90 flex cursor-pointer items-center justify-center rounded-md px-3 py-2 transition-all duration-200 ${isActive(url) ? "bg-orange-90" : ""}`}
+                            >
+                              {icon}
+                            </Link>
+                          </Tooltip>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
               {/* </ScrollArea> */}
 
               <div className="w-full p-2">
                 <div
-                  className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-gray-300" : "p-0"} `}
+                  className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-orange-90" : "p-0"} `}
                 >
                   <Image
                     src="https://github.com/shadcn.png"

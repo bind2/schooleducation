@@ -34,7 +34,10 @@ export default function StudentInformation() {
       "If you have specific questions or wish to request more information about Little Learners Academy, please complete the contact form below. Kindly provide the following details to help us better understand your needs",
   };
   return (
-    <section id="information" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
+    <section
+      id="information"
+      style={{ scrollMarginTop: `${headerHeight + 16}px` }}
+    >
       <div className="container">
         <SectionHead {...sectionHeadData} />
 
@@ -56,7 +59,7 @@ export default function StudentInformation() {
               href={"https://www.facebook.com"}
               target="_blank"
               aria-label="facebook"
-              className="bg-orange-90 rounded-md border-2 px-6 py-2"
+              className="bg-orange-90 hover:bg-orange-80 rounded-md border-2 px-6 py-2 transition-colors duration-300"
             >
               <Image
                 src={"svg/facebook.svg"}
@@ -69,7 +72,7 @@ export default function StudentInformation() {
               href={"https://www.twitter.com"}
               target="_blank"
               aria-label="twitter"
-              className="bg-orange-90 rounded-md border-2 px-6 py-2"
+              className="bg-orange-90 hover:bg-orange-80 rounded-md border-2 px-6 py-2 transition-colors duration-300"
             >
               <Image
                 src={"svg/twitter.svg"}
@@ -82,7 +85,7 @@ export default function StudentInformation() {
               href={"https://www.linkedin.com"}
               target="_blank"
               aria-label="linkedin"
-              className="bg-orange-90 rounded-md border-2 px-6 py-2"
+              className="bg-orange-90 hover:bg-orange-80 rounded-md border-2 px-6 py-2 transition-colors duration-300"
             >
               <Image
                 src={"svg/linkedin.svg"}
@@ -113,6 +116,7 @@ export default function StudentInformation() {
                   onChange={handleChange}
                   placeholder="Enter Parent Name"
                   className="bg-orange-99 rounded-md border-2 p-4"
+                  required
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -196,7 +200,7 @@ export default function StudentInformation() {
             </div>
             <button
               type="submit"
-              className="bg-orange-75 mt-10 w-full rounded-lg border-2 p-4 cursor-pointer"
+              className="bg-orange-75 hover:bg-orange-70 mt-10 w-full cursor-pointer rounded-lg border-2 p-4 text-2xl font-medium transition-colors duration-300"
             >
               Submit
             </button>

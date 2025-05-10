@@ -24,7 +24,7 @@ export default function ScrollToTop() {
       {visible && (
         <motion.button
           onClick={scrollToTop}
-          className="bg-orange-80 hover:bg-orange-75 fixed right-5 bottom-5 z-40 cursor-pointer rounded-md p-3 text-white shadow-lg"
+          className="bg-orange-80 hover:bg-orange-75 transition-colors duration-300 fixed right-5 bottom-5 z-40 cursor-pointer rounded-md p-3 text-white shadow-lg"
           aria-label="Back to top"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

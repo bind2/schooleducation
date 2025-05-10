@@ -57,13 +57,11 @@ export default function OurPages() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 key={index}
-                className="bg-absolute-white rounded-lg border-2 p-10 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]"
+                className="bg-absolute-white flex flex-col gap-10 rounded-lg border-2 p-10 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]"
               >
-                <h2 className="mt-4 mb-4 text-center text-3xl font-bold">
-                  {title}
-                </h2>
+                <h2 className="mt-4 text-center text-3xl font-bold">{title}</h2>
 
-                <div className="relative mt-10 flex w-full items-center gap-1">
+                <div className="relative flex w-full items-center gap-1">
                   {/* Left circle */}
                   <div className="bg-absolute-white absolute -left-1 z-10 h-5 w-5 rounded-full border-2 border-black" />
 
@@ -80,11 +78,11 @@ export default function OurPages() {
                   <div className="bg-absolute-white absolute -right-1 z-10 h-5 w-5 rounded-full border-2 border-black" />
                 </div>
 
-                <p className="mt-10 text-center">{content}</p>
+                <p className="text-center">{content}</p>
 
                 <motion.button
                   whileHover="hover"
-                  className="bg-orange-90 hover:bg-orange-80 mt-10 w-full rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)] transition-colors duration-300"
+                  className="bg-orange-90 hover:bg-orange-80 mt-auto w-full rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)] transition-colors duration-300"
                 >
                   <Link
                     href={url}

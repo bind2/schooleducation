@@ -11,7 +11,10 @@ export default function GetInTouch() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
-    <section id="map-and-direction" style={{ scrollMarginTop: `${headerHeight + 16}px` }}>
+    <section
+      id="map-and-direction"
+      style={{ scrollMarginTop: `${headerHeight + 16}px` }}
+    >
       <div className="container">
         <motion.div
           ref={ref}
@@ -44,9 +47,9 @@ export default function GetInTouch() {
             <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
               <Link
                 href={`mailto:deepak7890bind@gmail.com`}
-                className="flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
+                className="group flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
               >
-                <div className="bg-orange-97 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
+                <div className="bg-orange-97 group-hover:bg-orange-90 transition-colors duration-300 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
                   <Image
                     src={"svg/mail.svg"}
                     alt="mail icon"
@@ -58,9 +61,9 @@ export default function GetInTouch() {
               </Link>
               <Link
                 href={`tel:+917722072980`}
-                className="flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
+                className="group flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
               >
-                <div className="bg-orange-97 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
+                <div className="bg-orange-97 group-hover:bg-orange-90 transition-colors duration-300 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
                   <Image
                     src={"svg/phone.svg"}
                     alt="mail icon"
@@ -73,9 +76,9 @@ export default function GetInTouch() {
               <Link
                 href="https://www.google.com/maps"
                 target="_blank"
-                className="flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
+                className="group flex w-full items-center gap-2 rounded-lg border-2 p-2 hover:underline"
               >
-                <div className="bg-orange-97 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
+                <div className="bg-orange-97 group-hover:bg-orange-90 transition-colors duration-300 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
                   <Image
                     src={"svg/location-mark.svg"}
                     alt="mail icon"
@@ -85,9 +88,7 @@ export default function GetInTouch() {
                 </div>
                 <span>Somewhere in the World</span>
               </Link>
-              <div
-                className="flex w-full items-center gap-2 rounded-lg border-2 p-2"
-              >
+              <div className="flex w-full items-center gap-2 rounded-lg border-2 p-2">
                 <div className="bg-orange-97 flex min-h-[30px] min-w-[30px] items-center justify-center rounded-sm border-2 p-1">
                   <Image
                     src={"svg/clock-icon.svg"}
