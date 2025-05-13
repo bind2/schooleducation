@@ -13,7 +13,7 @@ export default function Select({
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
-  const options = ["Option 1", "Option 2", "Option 3"];
+  const options = ["option 1", "option 2", "option 3"];
 
   const {
     field: { value, onChange },

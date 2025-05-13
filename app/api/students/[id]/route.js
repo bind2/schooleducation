@@ -32,8 +32,33 @@ export async function GET(req, {params}) {
 
 export async function DELETE(req, { params }) {
   try {
-    return NextResponse.json({ message: "delete" });
+    const id = params?.id;
+
+    if (!id || typeof id !== 'string') {
+      return NextResponse.json({ message: 'ID is required' }, { status: 400 });
+    }
+
+    const deletedStudent = await prisma.student.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(
+      { message: 'Student deleted successfully' },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ message: "error" });
+
+    if (error.code === 'P2025') {
+      // Prisma error when record not found
+      return NextResponse.json(
+        { message: 'Student not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }

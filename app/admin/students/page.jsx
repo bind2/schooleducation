@@ -2,15 +2,17 @@
 
 import SearchBar from "@/components/search-bar";
 import Link from "next/link";
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Students() {
+  const [deletingId, setDeletingId] = useState(null);
   const tableHeaders = [
     "Index",
     "Student Name",
     "Phone Number",
     "Program of Interest",
+    "Action",
   ];
 
   const searchSuggestions = [
@@ -27,6 +29,8 @@ export default function Students() {
     console.log("Search term:", searchTerm);
   };
 
+  const queryClient = useQueryClient();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
@@ -34,11 +38,43 @@ export default function Students() {
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
-      return res.json(); // parse JSON and return
+      return res.json();
     },
   });
 
-  console.log(error)
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(`/api/students/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete student");
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["students"]);
+    },
+  });
+
+  const handleDelete = async (id) => {
+    setDeletingId(id); // start loading for this row
+    try {
+      const res = await fetch(`/api/students/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete");
+
+      // Refetch query or remove item from local state
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+    } catch (error) {
+      console.error(error);
+      alert("Error deleting student");
+    } finally {
+      setDeletingId(null); // stop loading
+    }
+  };
 
   return (
     <div>
@@ -69,40 +105,70 @@ export default function Students() {
 
             <div className="mt-5 overflow-hidden rounded-lg border-2">
               {isLoading ? (
-                <div className="p-4 flex justify-center items-start">loading...</div>
+                <div className="p-3 text-sm text-center">Loading...</div>
+              ) : error ? (
+                <div className="p-3 text-center text-red-600">
+                  {error.message}
+                </div>
+              ) : data?.length === 0 ? (
+                <div className="p-3 text-center text-sm">
+                  No students found.
+                </div>
               ) : (
                 data?.map((row, rowIndex) => {
                   const isLastRow = rowIndex === data?.length - 1;
                   const baseCellClasses = "border-black px-4 py-3 text-sm";
                   const borderBottomClass = isLastRow ? "" : "border-b-2";
 
-                  const cells = [
-                    (rowIndex + 1).toString(),
-                    row.studentName,
-                    row.phoneNumber,
-                    row.programOfInterest,
-                  ];
-
                   return (
                     <div
                       key={rowIndex}
                       className="bg-orange-99 hover:bg-orange-95"
                     >
-                      <Link
-                        href={`/admin/students/${row?.id}`}
-                        className="flex"
-                      >
-                        {cells.map((cellData, cellIndex) => (
-                          <span
-                            key={cellIndex}
-                            className={`${
-                              cellIndex === 0 ? "w-50" : "w-full"
-                            } ${baseCellClasses} ${cellIndex !== cells.length - 1 ? "border-r-2" : ""} ${borderBottomClass} items-center justify-center`}
+                      <div className="flex">
+                        <Link
+                          href={`/admin/students/${row?.id}`}
+                          className="flex w-full"
+                        >
+                          <div
+                            className={`w-18 ${baseCellClasses} border-r-2 ${borderBottomClass}`}
                           >
-                            {cellData}
-                          </span>
-                        ))}
-                      </Link>
+                            {rowIndex + 1}
+                          </div>
+                          <div
+                            className={`w-4/12 ${baseCellClasses} border-r-2 ${borderBottomClass}`}
+                          >
+                            {row.studentName}
+                          </div>
+                          <div
+                            className={`w-4/12 ${baseCellClasses} border-r-2 ${borderBottomClass}`}
+                          >
+                            {row.phoneNumber}
+                          </div>
+                          <div
+                            className={`w-4/12 ${baseCellClasses} border-r-2 ${borderBottomClass}`}
+                          >
+                            {row.programOfInterest}
+                          </div>
+                        </Link>
+
+                        <div
+                          className={`w-4/12 ${baseCellClasses} ${borderBottomClass}`}
+                        >
+                          {deletingId === row.id ? (
+                            <span className="text-gray-500 italic">
+                              Deleting...
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => handleDelete(row.id)}
+                              className="cursor-pointer text-red-600 hover:underline"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   );
                 })

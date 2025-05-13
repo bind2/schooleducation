@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function StudentInfo({ params }) {
   const { id } = use(params);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["student", id],
     queryFn: async () => {
       const res = await fetch(`/api/students/${id}`);
