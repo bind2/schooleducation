@@ -31,7 +31,7 @@ export default function StudentInfo({ params }) {
             Student Information
           </h2>
           <div className="grid grid-cols-1 gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
-            <InfoRow label="ID" value={id} />
+            <InfoRow label="ID" value={data?.id} />
             <InfoRow label="Parent Name" value={data?.parentName} />
             <InfoRow label="Student Name" value={data?.studentName} />
             <InfoRow label="Student Age" value={data?.studentAge} />
