@@ -4,6 +4,7 @@ import SearchBar from "@/components/search-bar";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteStudentById, getStudents } from "@/api/student";
 
 export default function Students() {
   const [deletingId, setDeletingId] = useState(null);
@@ -33,47 +34,25 @@ export default function Students() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["students"],
-    queryFn: async () => {
-      const res = await fetch("/api/students");
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return res.json();
-    },
+    queryFn: getStudents,
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const res = await fetch(`/api/students/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to delete student");
-      }
-      return res.json();
-    },
+    mutationFn: (id) => deleteStudentById(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["students"]);
     },
+    onSettled: () => {
+      setDeletingId(null);
+    },
+    onError: () => {
+      alert("Error deleting student");
+    }
   });
 
-  const handleDelete = async (id) => {
-    setDeletingId(id); // start loading for this row
-    try {
-      const res = await fetch(`/api/students/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Failed to delete");
-
-      // Refetch query or remove item from local state
-      queryClient.invalidateQueries({ queryKey: ["students"] });
-    } catch (error) {
-      console.error(error);
-      alert("Error deleting student");
-    } finally {
-      setDeletingId(null); // stop loading
-    }
+  const handleDelete = (id) => {
+    setDeletingId(id);
+    deleteMutation.mutate(id);
   };
 
   return (
@@ -105,7 +84,7 @@ export default function Students() {
 
             <div className="mt-5 overflow-hidden rounded-lg border-2">
               {isLoading ? (
-                <div className="p-3 text-sm text-center">Loading...</div>
+                <div className="p-3 text-center text-sm">Loading...</div>
               ) : error ? (
                 <div className="p-3 text-center text-red-600">
                   {error.message}

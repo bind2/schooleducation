@@ -28,28 +28,38 @@ export async function GET() {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const {
-      studentName,
-      emailAddress,
-      phoneNumber,
-      parentName,
-      studentAge,
-      programOfInterest,
-      message,
-    } = body;
+    const { emailAddress, studentAge, ...rest } = body;
 
+
+    if (!emailAddress) {
+      return NextResponse.json(
+        { message: "Email is required" },
+        { status: 400 },
+      );
+    }
+
+    // 1. Check if email already exists
+    const existingStudent = await prisma.student.findUnique({
+      where: { emailAddress },
+    });
+
+    if (existingStudent) {
+      return NextResponse.json(
+        { message: "A student with this email already exists" },
+        { status: 409 },
+      );
+    }
+
+    // 2. Create the new student
     const newStudent = await prisma.student.create({
       data: {
-        studentName,
         emailAddress,
-        phoneNumber,
-        parentName,
         studentAge: Number(studentAge),
-        programOfInterest,
-        message,
+        ...rest,
       },
     });
-    return NextResponse.json({ message: "create" }, { status: 201 });
+
+    return NextResponse.json({ message: "Student created" }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },

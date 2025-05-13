@@ -17,9 +17,13 @@ export default function Select({
 
   const {
     field: { value, onChange },
+    fieldState: { error },
   } = useController({
     name,
     control,
+    rules: {
+      required: "Please select a program of interest",
+    },
   });
 
   const handleSelect = (option) => {
@@ -50,11 +54,19 @@ export default function Select({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-orange-99 flex w-full items-center justify-between rounded-md border-2 p-4 text-left"
+          className={`bg-orange-99 flex w-full items-center justify-between rounded-md border-2 p-4 text-left ${
+            error ? "border-red-500" : ""
+          }`}
         >
           <span>{value || "Select Program"}</span>
           <ChevronDown className="h-4 w-4" />
         </button>
+
+        {error && (
+          <p role="alert" className="mt-1 text-sm text-red-500">
+            {error.message}
+          </p>
+        )}
 
         <AnimatePresence>
           {isOpen && (

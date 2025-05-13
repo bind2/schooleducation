@@ -9,6 +9,7 @@ import { useInView, motion } from "motion/react";
 import useHeaderStore from "@/stores/use-header.store";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import { createStudent } from "@/api/student";
 
 export default function StudentInformation() {
   const headerHeight = useHeaderStore((state) => state.height);
@@ -22,35 +23,23 @@ export default function StudentInformation() {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const mutation = useMutation({
-    mutationFn: async (formData) => {
-      const response = await fetch("/api/students", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
-
-      return response.json(); // or just `return await response.text();` if you don't return JSON
-    },
+    mutationFn: async (formData) => createStudent(formData),
     onSuccess: () => {
-      // Optional: show success message, reset form, etc.
-      console.log("Form submitted successfully");
+      alert("Form submitted successfully");
     },
     onError: (error) => {
-      // Optional: handle error
-      console.error("Submission error:", error);
+      alert(error);
     },
   });
 
   const onSubmit = async (data) => {
     await mutation.mutateAsync(data);
+    reset()
   };
 
   const sectionHeadData = {
@@ -138,10 +127,17 @@ export default function StudentInformation() {
                   <input
                     type="text"
                     id="parentName"
-                    {...register("parentName", { required: true })}
+                    {...register("parentName", {
+                      required: "parent name required",
+                    })}
                     placeholder="Enter Parent Name"
-                    className="bg-orange-99 rounded-md border-2 p-4"
+                    className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.parentName && "border-red-500"}`}
                   />
+                  {errors.parentName && (
+                    <p role="alert" className="text-red-500">
+                      {errors.parentName.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label
@@ -175,10 +171,17 @@ export default function StudentInformation() {
                   <input
                     type="text"
                     id="phoneNumber"
-                    {...register("phoneNumber", { required: true })}
+                    {...register("phoneNumber", {
+                      required: "phone number required",
+                    })}
                     placeholder="Enter Phone Number"
-                    className="bg-orange-99 rounded-md border-2 p-4"
+                    className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.phoneNumber && "border-red-500"}`}
                   />
+                  {errors.phoneNumber && (
+                    <p role="alert" className="text-red-500">
+                      {errors.phoneNumber.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label
@@ -190,11 +193,17 @@ export default function StudentInformation() {
                   <input
                     type="text"
                     id="studentName"
-                    // name="studentName"
-                    {...register("studentName", { required: true })}
+                    {...register("studentName", {
+                      required: "student name required",
+                    })}
                     placeholder="Enter Student Name"
-                    className="bg-orange-99 rounded-md border-2 p-4"
+                    className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.studentName && "border-red-500"}`}
                   />
+                  {errors.studentName && (
+                    <p role="alert" className="text-red-500">
+                      {errors.studentName.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label
@@ -204,12 +213,19 @@ export default function StudentInformation() {
                     Student Age
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="studentAge"
-                    {...register("studentAge", { required: true })}
+                    {...register("studentAge", {
+                      required: "student age required",
+                    })}
                     placeholder="Enter Student Age"
-                    className="bg-orange-99 rounded-md border-2 p-4"
+                    className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.studentAge && "border-red-500"}`}
                   />
+                  {errors.studentAge && (
+                    <p role="alert" className="text-red-500">
+                      {errors.studentAge.message}
+                    </p>
+                  )}
                 </div>
 
                 <Select name="programOfInterest" control={control} />
@@ -224,7 +240,7 @@ export default function StudentInformation() {
                 <textarea
                   type="text"
                   id="message"
-                  {...register("message", { required: true })}
+                  {...register("message")}
                   rows={5}
                   placeholder="Enter Your Message"
                   className="bg-orange-99 rounded-md border-2 p-4"
