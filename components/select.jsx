@@ -1,18 +1,29 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { Check } from "lucide-react";
+import { useController } from "react-hook-form";
 
-export default function Select({ value, onChange }) {
+export default function Select({
+  name,
+  control,
+  label = "Program of Interest",
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
   const options = ["Option 1", "Option 2", "Option 3"];
 
+  const {
+    field: { value, onChange },
+  } = useController({
+    name,
+    control,
+  });
+
   const handleSelect = (option) => {
-    onChange(option); // send selected value to parent
+    onChange(option);
     setIsOpen(false);
   };
 
@@ -22,11 +33,8 @@ export default function Select({ value, onChange }) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -35,7 +43,7 @@ export default function Select({ value, onChange }) {
         onClick={() => setIsOpen(!isOpen)}
         className="text-gray-30 text-xl font-semibold select-none"
       >
-        Program of Interest
+        {label}
       </label>
 
       <div className="relative">

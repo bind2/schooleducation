@@ -59,7 +59,7 @@ export function SidebarLayout({ children }) {
   ];
 
   return (
-    <div className="relative flex min-h-screen">
+    <div className="relative flex h-screen">
       <AnimatePresence>
         {(isOpen || !isMobile) && (
           <>
@@ -81,7 +81,7 @@ export function SidebarLayout({ children }) {
               <div className="w-full p-2">
                 <Link
                   href={"/"}
-                  className={`flex cursor-pointer items-center gap-2 rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-orange-90" : "p-0"} `}
+                  className={`flex cursor-pointer items-center gap-2 rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-orange-95" : "p-0"} `}
                 >
                   <Image
                     src={"/svg/logo.svg"}
@@ -129,7 +129,7 @@ export function SidebarLayout({ children }) {
                         {isOpen ? (
                           <Link
                             href={url}
-                            className={`hover:bg-orange-90 flex w-full gap-2 rounded-md px-3 py-2 transition-all duration-300 ${isActive(url) ? "bg-orange-90" : ""}`}
+                            className={`hover:bg-orange-95 flex w-full gap-2 rounded-md px-3 py-2 transition-all duration-300 ${isActive(url) ? "bg-orange-95" : ""}`}
                           >
                             <div className="flex items-center justify-center rounded-md">
                               {icon}
@@ -152,7 +152,7 @@ export function SidebarLayout({ children }) {
                           <Tooltip content={label} side="right">
                             <Link
                               href={url}
-                              className={`hover:bg-orange-90 flex cursor-pointer items-center justify-center rounded-md px-3 py-2 transition-all duration-200 ${isActive(url) ? "bg-orange-90" : ""}`}
+                              className={`hover:bg-orange-90 flex cursor-pointer items-center justify-center rounded-md px-3 py-2 transition-all duration-200 ${isActive(url) ? "bg-orange-95" : ""}`}
                             >
                               {icon}
                             </Link>
@@ -167,7 +167,7 @@ export function SidebarLayout({ children }) {
 
               <div className="w-full p-2">
                 <div
-                  className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-orange-90" : "p-0"} `}
+                  className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "p-2 hover:bg-orange-95" : "p-0"} `}
                 >
                   <Image
                     src="https://github.com/shadcn.png"
@@ -224,7 +224,7 @@ export function SidebarLayout({ children }) {
       <div className="min-h-screen w-full flex-1">
         <div className="sticky top-0 left-0 z-10 flex h-[60px] w-full items-center justify-between border-b bg-white p-2">
           <button
-            className="rounded-md p-2 transition-all duration-200 hover:cursor-pointer hover:bg-gray-300"
+            className="rounded-md p-2 transition-all duration-200 hover:cursor-pointer hover:bg-orange-95"
             onClick={toggleSidebar}
           >
             <PanelLeft size={18} />

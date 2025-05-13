@@ -26,10 +26,7 @@ export default function LenisProvider({ children }) {
   }, []);
 
   return (
-    <ReactLenis
-      ref={lenisRef}
-      root
-    >
+    <ReactLenis ref={lenisRef} root>
       {children}
     </ReactLenis>
   );

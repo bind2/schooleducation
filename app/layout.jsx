@@ -26,9 +26,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${outfit.variable} ${raleway.variable}`}>
-      <body cz-shortcut-listen="true" className={`font-outfit antialiased w-full`}>
+      <body cz-shortcut-listen="true"  className={`font-outfit antialiased w-full`}>
         <RootLayoutWrapper>
-          <main>{children}</main>
+          <main data-scroll-container >{children}</main>
         </RootLayoutWrapper>
       </body>
     </html>
