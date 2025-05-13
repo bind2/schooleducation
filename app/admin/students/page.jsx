@@ -38,6 +38,8 @@ export default function Students() {
     },
   });
 
+  console.log(error)
+
   return (
     <div>
       {/* table */}
@@ -87,7 +89,7 @@ export default function Students() {
                       className="bg-orange-99 hover:bg-orange-95"
                     >
                       <Link
-                        href={`/admin/students/${rowIndex}`}
+                        href={`/admin/students/${row?.id}`}
                         className="flex"
                       >
                         {cells.map((cellData, cellIndex) => (

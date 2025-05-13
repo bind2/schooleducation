@@ -2,10 +2,9 @@ import { PrismaClient } from "@/app/generated/prisma";
 import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-export async function GET(req, { params }) {
+export async function GET(req, {params}) {
   try {
-    const { id } = params;
-
+    const id = params.id;
     if (!id) {
       return NextResponse.json({ message: "ID is required" }, { status: 400 });
     }
