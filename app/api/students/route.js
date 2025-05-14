@@ -16,6 +16,7 @@ export async function GET() {
       },
     });
 
+
     return NextResponse.json(students, { status: 200 });
   } catch (error) {
     return NextResponse.json(

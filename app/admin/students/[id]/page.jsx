@@ -4,14 +4,16 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import React, { use } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getStudentById } from "@/api/student";
 
 export default function StudentInfo({ params }) {
   const { id } = use(params);
 
   const { data, isLoading } = useQuery({
     queryKey: ["student", id],
-    queryFn: () => getStudentById(id),
+    queryFn: async() => {
+      const res = await fetch(`/api/students/${id}`)
+      return res.json()
+    },
     enabled: !!id,
   });
 

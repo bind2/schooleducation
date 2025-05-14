@@ -9,7 +9,6 @@ import { useInView, motion } from "motion/react";
 import useHeaderStore from "@/stores/use-header.store";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { createStudent } from "@/api/student";
 
 export default function StudentInformation() {
   const headerHeight = useHeaderStore((state) => state.height);
@@ -28,9 +27,16 @@ export default function StudentInformation() {
   } = useForm();
 
   const mutation = useMutation({
-    mutationFn: async (formData) => createStudent(formData),
-    onSuccess: () => {
-      alert("Form submitted successfully");
+    mutationFn: async (formData) => {
+      const res = await fetch("/api/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      return res.json()
+    },
+    onSuccess: (success) => {
+      alert(success.message)
     },
     onError: (error) => {
       alert(error);
@@ -39,7 +45,7 @@ export default function StudentInformation() {
 
   const onSubmit = async (data) => {
     await mutation.mutateAsync(data);
-    reset()
+    reset();
   };
 
   const sectionHeadData = {

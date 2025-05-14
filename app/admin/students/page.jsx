@@ -4,7 +4,6 @@ import SearchBar from "@/components/search-bar";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteStudentById, getStudents } from "@/api/student";
 
 export default function Students() {
   const [deletingId, setDeletingId] = useState(null);
@@ -34,20 +33,28 @@ export default function Students() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["students"],
-    queryFn: getStudents,
+    queryFn: async () => {
+      const res = await fetch("/api/students");
+      return res.json();
+    },
   });
 
+
   const deleteMutation = useMutation({
-    mutationFn: (id) => deleteStudentById(id),
-    onSuccess: () => {
+    mutationFn: async (id) => {
+      const res = await fetch(`/api/students/${id}`, {method: 'DELETE'})
+      return res.json()
+    },
+    onSuccess: (success) => {
+      alert(success.message)
       queryClient.invalidateQueries(["students"]);
     },
     onSettled: () => {
       setDeletingId(null);
     },
-    onError: () => {
-      alert("Error deleting student");
-    }
+    onError: (error) => {
+      console.log(error)
+    },
   });
 
   const handleDelete = (id) => {
