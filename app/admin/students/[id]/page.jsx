@@ -15,6 +15,7 @@ export default function StudentInfo({ params }) {
       return res.json()
     },
     enabled: !!id,
+    retry: 1
   });
 
   return (

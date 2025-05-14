@@ -37,6 +37,7 @@ export default function Students() {
       const res = await fetch("/api/students");
       return res.json();
     },
+    retry: 1
   });
 
 
