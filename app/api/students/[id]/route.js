@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 // Fetch one student by ID
 export async function GET(_req, { params }) {
   try {
-    const id = params.id;
+    const {id} = await params
 
     if (!id || typeof id !== "string") {
       return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
@@ -32,7 +32,7 @@ export async function GET(_req, { params }) {
 // Delete student by ID
 export async function DELETE(_req, { params }) {
   try {
-    const id = params.id;
+    const {id} = await params;
 
     if (!id || typeof id !== "string") {
       return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
