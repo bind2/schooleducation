@@ -16,7 +16,6 @@ export async function GET() {
       },
     });
 
-
     return NextResponse.json(students, { status: 200 });
   } catch (error) {
     return NextResponse.json(
@@ -30,7 +29,6 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const { emailAddress, studentAge, ...rest } = body;
-
 
     if (!emailAddress) {
       return NextResponse.json(
@@ -60,7 +58,14 @@ export async function POST(req) {
       },
     });
 
-    return NextResponse.json({ message: "Student created" }, { status: 201 });
+    if(!newStudent){
+      return NextResponse.json({message: 'failed to submitting'}, {status: 400})
+    }
+
+    return NextResponse.json(
+      { message: "Student Submitting Successfully" },
+      { status: 201 },
+    );
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },

@@ -53,7 +53,7 @@ export default function Students() {
       setDeletingId(null);
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error.message)
     },
   });
 
