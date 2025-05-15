@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import React, { use } from "react";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function StudentInfo({ params }) {
   const { id } = use(params);
@@ -11,8 +12,8 @@ export default function StudentInfo({ params }) {
   const { data, isLoading } = useQuery({
     queryKey: ["student", id],
     queryFn: async() => {
-      const res = await fetch(`/api/students/${id}`)
-      return res.json()
+      const res = await axios.get(`/api/students/${id}`)
+      return res.data
     },
     enabled: !!id,
     retry: 1

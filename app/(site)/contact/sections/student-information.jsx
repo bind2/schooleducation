@@ -9,6 +9,7 @@ import { useInView, motion } from "motion/react";
 import useHeaderStore from "@/stores/use-header.store";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function StudentInformation() {
   const headerHeight = useHeaderStore((state) => state.height);
@@ -28,18 +29,18 @@ export default function StudentInformation() {
 
   const mutation = useMutation({
     mutationFn: async (formData) => {
-      const res = await fetch("/api/students", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const res = await axios.post("/api/students", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      return res.json()
+      return res.data;
     },
     onSuccess: (success) => {
-      alert(success.message)
+      alert(success.message);
     },
     onError: (error) => {
-      alert(error);
+      alert(error.message);
     },
   });
 
