@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function Students() {
+  const queryClient = useQueryClient();
   const [deletingId, setDeletingId] = useState(null);
   const tableHeaders = [
     "Index",
@@ -16,46 +17,29 @@ export default function Students() {
     "Action",
   ];
 
-  const searchSuggestions = [
-    "Apple",
-    "Banana",
-    "Orange",
-    "Grapes",
-    "Watermelon",
-    "Pineapple",
-    "aa",
-  ];
-
-  const handleSearch = (searchTerm) => {
-    console.log("Search term:", searchTerm);
-  };
-
-  const queryClient = useQueryClient();
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
       const res = await axios.get("/api/students");
       return res.data;
     },
-    retry: 1
+    retry: 1,
   });
-
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await axios.delete(`/api/students/${id}`)
-      return res.data
+      const res = await axios.delete(`/api/students/${id}`);
+      return res.data;
     },
     onSuccess: (success) => {
-      alert(success.message)
+      alert(success.message);
       queryClient.invalidateQueries(["students"]);
     },
     onSettled: () => {
       setDeletingId(null);
     },
     onError: (error) => {
-      console.log(error.message)
+      alert(error.message);
     },
   });
 
@@ -70,11 +54,6 @@ export default function Students() {
       <div>
         <div className="bg-absolute-white w-full overflow-x-auto rounded-lg border-2 p-6 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
           <div className="min-w-[800px] overflow-hidden">
-            <SearchBar
-              onSearch={handleSearch}
-              suggestions={searchSuggestions}
-              baseUrl="/admin/students"
-            />
             {/* Header Row */}
             <div className="bg-orange-95 flex rounded-lg border-2">
               {tableHeaders.map((header, idx) => (

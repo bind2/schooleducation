@@ -78,7 +78,7 @@ export default function FreeStructure() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="mt-20"
         >
-          <div className="bg-absolute-white w-full overflow-x-auto rounded-lg border-2 p-6 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
+          <div className="bg-absolute-white w-full overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-red-500 rounded-lg border-2 p-6 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
             <div className="min-w-[800px] overflow-hidden">
               {/* Header Row */}
               <div className="bg-orange-95 flex rounded-lg border-2">

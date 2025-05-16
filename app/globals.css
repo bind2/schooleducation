@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
+@plugin 'tailwind-scrollbar';
 
 :root {
   --absolute-white: #ffffff;
@@ -53,13 +54,6 @@
 html {
   scroll-behavior: smooth;
 }
-
-/* html,
-body {
-  height: 100%;
-  overflow-x: hidden;
-  scroll-behavior: auto !important;
-} */
 
 body {
   background: var(--orange-97);
