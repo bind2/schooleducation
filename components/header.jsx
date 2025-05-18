@@ -117,7 +117,13 @@ export default function Header() {
     <>
       {/* Announcement Banner */}
       {announceBar && (
-        <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="container"
+        >
           <div className="bg-orange-90 relative mt-2 flex items-center justify-center overflow-hidden rounded-sm border-2 p-2">
             <Image
               src={`svg/header-left-icon.svg`}
@@ -165,7 +171,7 @@ export default function Header() {
               <XIcon size={18} />
             </span>
           </div>
-        </div>
+        </motion.div>
       )}
 
       <header
@@ -175,9 +181,9 @@ export default function Header() {
         <div className="container">
           <motion.div
             ref={scrollRef}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="flex flex-col gap-2 py-2"
           >
             {/* Main Header Bar */}

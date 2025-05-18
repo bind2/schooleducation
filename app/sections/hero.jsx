@@ -15,11 +15,11 @@ const containerVariants = {
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+    transition: { duration: 0.3, ease: "easeInOut" },
   },
 };
 
@@ -28,13 +28,13 @@ const fadeLeft = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.8, 0.25, 1] },
+    transition: { duration: 0.3, ease: "easeInOut" },
   },
 };
 
 export default function Hero() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true});
+  const isInView = useInView(ref, { once: true });
   return (
     <section>
       <div className="container">
@@ -47,7 +47,7 @@ export default function Hero() {
         >
           <motion.div
             variants={fadeLeft}
-            className="bg-orange-80 relative flex w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] items-center justify-center"
+            className="bg-orange-80 relative flex min-h-[300px] w-full items-center justify-center sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px]"
           >
             <Image
               src={`svg/svg-hero.svg`}
@@ -55,7 +55,7 @@ export default function Hero() {
               height={100}
               priority
               alt="svg-hero"
-              className="absolute w-[80%] h-[80%] z-10"
+              className="absolute z-10 h-[80%] w-[80%]"
             />
             <Image
               src={`/image/hero-image.png`}
