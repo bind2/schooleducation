@@ -8,10 +8,11 @@ import React, { useRef } from "react";
 import { useInView, motion } from "motion/react";
 import useHeaderStore from "@/stores/use-header.store";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function StudentInformation() {
+  const queryClient = useQueryClient();
   const headerHeight = useHeaderStore((state) => state.height);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -27,6 +28,7 @@ export default function StudentInformation() {
     formState: { errors },
   } = useForm();
 
+  // add student
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const res = await axios.post("/api/students", formData, {
@@ -37,6 +39,7 @@ export default function StudentInformation() {
       return res.data;
     },
     onSuccess: (success) => {
+      queryClient.invalidateQueries({ queryKey: ["students"] });
       alert(success.message);
     },
     onError: (error) => {

@@ -22,7 +22,6 @@ export default function Header() {
 
   const navLinks = [
     { name: "Home", url: "/" },
-    { name: "Dashboard", url: "/admin" },
     { name: "About Us", url: "/about-us" },
     { name: "Academics", url: "/academics" },
     { name: "Admissions", url: "/admissions" },

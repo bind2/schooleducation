@@ -17,6 +17,7 @@ export default function Students() {
     "Action",
   ];
 
+  // fetch student
   const { data, isLoading, error } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
@@ -24,16 +25,22 @@ export default function Students() {
       return res.data;
     },
     retry: 1,
+    // staleTime: 1000 * 60 * 5,
+    // cacheTime: 1000 * 60 * 10,
   });
 
+  // delete student
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       const res = await axios.delete(`/api/students/${id}`);
-      return res.data;
+      return { ...res.data, id };
     },
     onSuccess: (success) => {
+      queryClient.setQueryData(['students'], (old) => {
+        if (!old) return [];
+        return old.filter((item) => item.id !== success.id);
+      });
       alert(success.message);
-      queryClient.invalidateQueries(["students"]);
     },
     onSettled: () => {
       setDeletingId(null);
