@@ -57,6 +57,7 @@ export default function ResetPasswordForm({ token }) {
             alt="signup"
             width={500}
             height={500}
+          
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-10">
