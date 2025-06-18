@@ -1,13 +1,14 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function SigninForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -15,31 +16,26 @@ export default function SigninForm() {
     formState: { errors },
   } = useForm();
 
-  const mutation = useMutation({
-    mutationFn: async (formData) => {
-      const res = await axios.post("/api/students", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return res.data;
-    },
-    onSuccess: (success) => {
-      alert(success.message);
-    },
-    onError: (error) => {
-      alert(error.message);
-    },
-  });
-
   const onSubmit = async (data) => {
-    await mutation.mutateAsync(data);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
+
+    if (res.ok) {
+      router.push("/admin");
+    } else {
+      alert(res.error || "Login failed!");
+    }
+
     reset();
   };
+
   return (
     <div className="container">
       <div className="bg-absolute-white my-4 flex overflow-hidden rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
-        <div className="relative lg:w-1/2 hidden lg:block">
+        <div className="relative hidden lg:block lg:w-1/2">
           <Image
             src="/image/auth/signup.jpg"
             alt="signup"
@@ -59,34 +55,34 @@ export default function SigninForm() {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-absolute-white lg:w-1/2 w-full p-5 md:p-20"
+          className="bg-absolute-white w-full p-5 md:p-20 lg:w-1/2"
         >
           <h1 className="text-center text-3xl font-bold">Sign In</h1>
           <div className="mt-10 grid grid-cols-1 gap-10">
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="emailAddress"
+                htmlFor="email"
                 className="text-gray-30 text-xl font-semibold"
               >
                 Email Address
               </label>
               <input
                 type="email"
-                id="emailAddress"
-                {...register("emailAddress", {
+                id="email"
+                {...register("email", {
                   required: "Email Address is required",
                 })}
                 placeholder="Enter Email Address"
-                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.emailAddress && "border-red-500"}`}
+                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.email && "border-red-500"}`}
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <p role="alert" className="text-red-500">
-                  {errors.emailAddress.message}
+                  {errors.email.message}
                 </p>
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
                   className="text-gray-30 text-xl font-semibold"
@@ -95,7 +91,7 @@ export default function SigninForm() {
                 </label>
                 <Link
                   href="/auth/forgot-password"
-                  className="block text-blue-500 hover:underline text-sm"
+                  className="block text-sm text-blue-500 hover:underline"
                 >
                   Forgot Password?
                 </Link>
@@ -126,10 +122,11 @@ export default function SigninForm() {
 
           <button
             type="submit"
-            disabled={mutation.isPending}
+            // disabled={mutation.isPending}
             className="bg-orange-75 hover:bg-orange-70 mt-10 w-full cursor-pointer rounded-lg border-2 p-4 text-2xl font-medium transition-colors duration-300"
           >
-            {mutation.isPending ? "Signing in..." : "Sign In"}
+            {/* {mutation.isPending ? "Signing in..." : "Sign In"} */}
+            Sign In
           </button>
         </form>
       </div>

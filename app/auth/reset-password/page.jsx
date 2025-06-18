@@ -5,36 +5,51 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Image from "next/image";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function ResetPasswordForm() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token");
+
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
+  const password = watch("password");
 
   const mutation = useMutation({
-    mutationFn: async (formData) => {
-      const res = await axios.post("/api/students", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+    mutationFn: async ({ password }) => {
+      const res = await axios.post("/api/auth/reset-password", {
+        token,
+        newPassword: password,
       });
       return res.data;
     },
     onSuccess: (success) => {
-      alert(success.message);
+      router.push("/auth/signin"); 
+      reset()
     },
     onError: (error) => {
-      alert(error.message);
+      alert(
+        error?.response?.data?.error ||
+          "Something went wrong. Please try again."
+      );
     },
   });
 
-  const onSubmit = async (data) => {
-    await mutation.mutateAsync(data);
-    reset();
+  const onSubmit = (data) => {
+    if (!token) {
+      alert("Missing or invalid reset token.");
+      return;
+    }
+
+    mutation.mutate({ password: data.password });
   };
+
   return (
     <div className="container">
       <div className="bg-absolute-white my-4 flex overflow-hidden rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
@@ -85,23 +100,25 @@ export default function ResetPasswordForm() {
             </div>
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="password"
+                htmlFor="cpassword"
                 className="text-gray-30 text-xl font-semibold"
               >
                 Confirm New Password
               </label>
               <input
                 type="text"
-                id="password"
-                {...register("password", {
+                id="cpassword"
+                {...register("cpassword", {
                   required: "enter your password",
+                  validate: (value) =>
+                    value === password || "Password do not match",
                 })}
                 placeholder="enter your password"
-                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.password && "border-red-500"}`}
+                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.cpassword && "border-red-500"}`}
               />
-              {errors.password && (
+              {errors.cpassword && (
                 <p role="alert" className="text-red-500">
-                  {errors.password.message}
+                  {errors.cpassword.message}
                 </p>
               )}
             </div>

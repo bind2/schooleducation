@@ -41,15 +41,20 @@ export default function StudentInformation() {
     onSuccess: (success) => {
       queryClient.invalidateQueries({ queryKey: ["students"] });
       alert(success.message);
+      reset();
     },
     onError: (error) => {
-      alert(error.message);
+      // alert(error.message);
+      if (error.response?.data?.message) {
+        alert(error.response.data.message); // Will show 409 message
+      } else {
+        alert("Something went wrong");
+      }
     },
   });
 
   const onSubmit = async (data) => {
     await mutation.mutateAsync(data);
-    reset();
   };
 
   const sectionHeadData = {
@@ -151,23 +156,23 @@ export default function StudentInformation() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label
-                    htmlFor="emailAddress"
+                    htmlFor="email"
                     className="text-gray-30 text-xl font-semibold"
                   >
                     Email Address
                   </label>
                   <input
                     type="email"
-                    id="emailAddress"
-                    {...register("emailAddress", {
+                    id="email"
+                    {...register("email", {
                       required: "Email Address is required",
                     })}
                     placeholder="Enter Email Address"
-                    className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.emailAddress && "border-red-500"}`}
+                    className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.email && "border-red-500"}`}
                   />
-                  {errors.emailAddress && (
+                  {errors.email && (
                     <p role="alert" className="text-red-500">
-                      {errors.emailAddress.message}
+                      {errors.email.message}
                     </p>
                   )}
                 </div>

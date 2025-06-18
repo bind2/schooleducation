@@ -6,18 +6,22 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
+  const password = watch("password");
 
   const mutation = useMutation({
     mutationFn: async (formData) => {
-      const res = await axios.post("/api/students", formData, {
+      const res = await axios.post("/api/auth/signup", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -25,10 +29,13 @@ export default function SignupForm() {
       return res.data;
     },
     onSuccess: (success) => {
-      alert(success.message);
+      router.push('/auth/signin')
+      // alert(success.message);
     },
     onError: (error) => {
-      alert(error.message);
+      // alert(error.message);
+      alert(error.response?.data?.error || "Something went wrong");
+
     },
   });
 
@@ -39,7 +46,7 @@ export default function SignupForm() {
   return (
     <div className="container">
       <div className="bg-absolute-white my-4 flex overflow-hidden rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
-        <div className="relative hidden lg:w-1/2 lg:block">
+        <div className="relative hidden lg:block lg:w-1/2">
           <Image
             src="/image/auth/signup.jpg"
             alt="signup"
@@ -59,7 +66,7 @@ export default function SignupForm() {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-absolute-white w-full lg:w-1/2 p-5 md:p-20"
+          className="bg-absolute-white w-full p-5 md:p-20 lg:w-1/2"
         >
           <h1 className="text-center text-3xl font-bold">Sign Up</h1>
           <div className="mt-10 grid grid-cols-1 gap-10">
@@ -94,16 +101,16 @@ export default function SignupForm() {
               </label>
               <input
                 type="email"
-                id="emailAddress"
-                {...register("emailAddress", {
+                id="email"
+                {...register("email", {
                   required: "Email Address is required",
                 })}
                 placeholder="Enter Email Address"
-                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.emailAddress && "border-red-500"}`}
+                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.email && "border-red-500"}`}
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <p role="alert" className="text-red-500">
-                  {errors.emailAddress.message}
+                  {errors.email.message}
                 </p>
               )}
             </div>
@@ -141,6 +148,8 @@ export default function SignupForm() {
                 id="cpassword"
                 {...register("cpassword", {
                   required: "confirm your password",
+                  validate: (value) =>
+                    value === password || "Password do not match",
                 })}
                 placeholder="confirm your password"
                 className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.cpassword && "border-red-500"}`}

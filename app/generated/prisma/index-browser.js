@@ -116,13 +116,23 @@ Prisma.NullTypes = {
 exports.Prisma.StudentScalarFieldEnum = {
   id: 'id',
   studentName: 'studentName',
-  emailAddress: 'emailAddress',
+  email: 'email',
   phoneNumber: 'phoneNumber',
   parentName: 'parentName',
   studentAge: 'studentAge',
   programOfInterest: 'programOfInterest',
   message: 'message',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  password: 'password',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry'
 };
 
 exports.Prisma.SortOrder = {
@@ -137,7 +147,8 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
-  Student: 'Student'
+  Student: 'Student',
+  User: 'User'
 };
 
 /**

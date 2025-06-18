@@ -15,30 +15,40 @@ export default function ForgotPasswordForm() {
   } = useForm();
 
   const mutation = useMutation({
-    mutationFn: async (formData) => {
-      const res = await axios.post("/api/students", formData, {
-        headers: {
-          "Content-Type": "application/json",
+    mutationFn: async ({email}) => {
+      const res = await axios.post(
+        "/api/auth/forgot-password",
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
       return res.data;
     },
     onSuccess: (success) => {
-      alert(success.message);
+      // alert(success.message);
+      alert(success.message || "Reset link sent successfully.");
+      reset();
     },
     onError: (error) => {
-      alert(error.message);
+      // alert(error.message);
+      alert(
+        error?.response?.data?.error ||
+          "Something went wrong. Please try again.",
+      );
     },
   });
 
-  const onSubmit = async (data) => {
-    await mutation.mutateAsync(data);
-    reset();
+  const onSubmit = (data) => {
+    mutation.mutate({ email: data.email });
+    
   };
   return (
     <div className="container">
       <div className="bg-absolute-white my-4 flex overflow-hidden rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
-        <div className="relative lg:w-1/2 hidden lg:block">
+        <div className="relative hidden lg:block lg:w-1/2">
           <Image
             src="/image/auth/signup.jpg"
             alt="signup"
@@ -48,20 +58,21 @@ export default function ForgotPasswordForm() {
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-10">
             <h1 className="mb-4 text-center text-3xl font-bold text-white">
-            Forgot your password?
+              Forgot your password?
             </h1>
             <p className="text-center text-white">
-            Don’t worry. Enter your registered email address and we’ll send you instructions to reset your password.
+              Don’t worry. Enter your registered email address and we’ll send
+              you instructions to reset your password.
             </p>
           </div>
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-absolute-white w-full lg:w-1/2 p-5 md:p-20"
+          className="bg-absolute-white w-full p-5 md:p-20 lg:w-1/2"
         >
           <h1 className="text-center text-3xl font-bold">Forgot Password</h1>
           <div className="mt-10 grid grid-cols-1 gap-10">
-          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <label
                 htmlFor="emailAddress"
                 className="text-gray-30 text-xl font-semibold"
@@ -70,16 +81,16 @@ export default function ForgotPasswordForm() {
               </label>
               <input
                 type="email"
-                id="emailAddress"
-                {...register("emailAddress", {
+                id="email"
+                {...register("email", {
                   required: "Email Address is required",
                 })}
                 placeholder="Enter Email Address"
-                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.emailAddress && "border-red-500"}`}
+                className={`bg-orange-99 rounded-md border-2 p-4 outline-none ${errors.email && "border-red-500"}`}
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <p role="alert" className="text-red-500">
-                  {errors.emailAddress.message}
+                  {errors.email.message}
                 </p>
               )}
             </div>

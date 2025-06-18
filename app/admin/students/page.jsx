@@ -36,7 +36,7 @@ export default function Students() {
     onSuccess: (success) => {
       queryClient.setQueryData(["students"], (old) => {
         if (!old) return [];
-        return old.filter((item) => item.id !== success.id);
+        return old.filter((item) => item.id !== success?.id);
       });
       alert(success.message);
     },

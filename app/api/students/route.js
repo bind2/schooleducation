@@ -28,9 +28,9 @@ export async function GET() {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { emailAddress, studentAge, ...rest } = body;
+    const { email, studentAge, ...rest } = body;
 
-    if (!emailAddress) {
+    if (!email) {
       return NextResponse.json(
         { message: "Email is required" },
         { status: 400 },
@@ -39,7 +39,7 @@ export async function POST(req) {
 
     // 1. Check if email already exists
     const existingStudent = await prisma.student.findUnique({
-      where: { emailAddress },
+      where: { email },
     });
 
     if (existingStudent) {
@@ -52,14 +52,17 @@ export async function POST(req) {
     // 2. Create the new student
     const newStudent = await prisma.student.create({
       data: {
-        emailAddress,
+        email,
         studentAge: Number(studentAge),
         ...rest,
       },
     });
 
-    if(!newStudent){
-      return NextResponse.json({message: 'failed to submitting'}, {status: 400})
+    if (!newStudent) {
+      return NextResponse.json(
+        { message: "failed to submitting" },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json(
@@ -67,6 +70,7 @@ export async function POST(req) {
       { status: 201 },
     );
   } catch (error) {
+    console.log(error.message);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 },
