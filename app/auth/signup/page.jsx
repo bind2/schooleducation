@@ -39,7 +39,7 @@ export default function SignupForm() {
   return (
     <div className="container">
       <div className="bg-absolute-white my-4 flex overflow-hidden rounded-lg border-2 [box-shadow:4px_4px_0px_1px_var(--absolute-black)]">
-        <div className="relative w-1/2">
+        <div className="relative hidden lg:w-1/2 lg:block">
           <Image
             src="/image/auth/signup.jpg"
             alt="signup"
@@ -59,7 +59,7 @@ export default function SignupForm() {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-absolute-white w-1/2 p-5 md:p-20"
+          className="bg-absolute-white w-full lg:w-1/2 p-5 md:p-20"
         >
           <h1 className="text-center text-3xl font-bold">Sign Up</h1>
           <div className="mt-10 grid grid-cols-1 gap-10">

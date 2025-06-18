@@ -25,8 +25,6 @@ export default function Students() {
       return res.data;
     },
     retry: 1,
-    // staleTime: 1000 * 60 * 5,
-    // cacheTime: 1000 * 60 * 10,
   });
 
   // delete student
@@ -36,7 +34,7 @@ export default function Students() {
       return { ...res.data, id };
     },
     onSuccess: (success) => {
-      queryClient.setQueryData(['students'], (old) => {
+      queryClient.setQueryData(["students"], (old) => {
         if (!old) return [];
         return old.filter((item) => item.id !== success.id);
       });

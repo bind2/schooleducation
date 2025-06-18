@@ -9,6 +9,7 @@ import axios from "axios";
 export default function StudentInfo({ params }) {
   const { id } = use(params);
 
+  // fetch one student
   const { data, isLoading } = useQuery({
     queryKey: ["student", id],
     queryFn: async() => {
