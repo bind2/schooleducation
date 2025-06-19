@@ -54,6 +54,7 @@ export default function StudentInformation() {
   });
 
   const onSubmit = async (data) => {
+    console.log(data)
     await mutation.mutateAsync(data);
   };
 

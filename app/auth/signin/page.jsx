@@ -13,7 +13,7 @@ export default function SigninForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -122,11 +122,10 @@ export default function SigninForm() {
 
           <button
             type="submit"
-            // disabled={mutation.isPending}
+            disabled={isSubmitting}
             className="bg-orange-75 hover:bg-orange-70 mt-10 w-full cursor-pointer rounded-lg border-2 p-4 text-2xl font-medium transition-colors duration-300"
           >
-            {/* {mutation.isPending ? "Signing in..." : "Sign In"} */}
-            Sign In
+            {isSubmitting ? "Signing in..." : "Sign In"}
           </button>
         </form>
       </div>

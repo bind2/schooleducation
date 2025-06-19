@@ -16,7 +16,7 @@ model Student {
   parentName        String
   studentAge        Int
   programOfInterest String
-  message           String
+  message           String?
   createdAt         DateTime @default(now())
 }
 

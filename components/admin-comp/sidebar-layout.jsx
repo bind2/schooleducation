@@ -10,6 +10,18 @@ import Image from "next/image";
 import { ChevronsUpDown } from "lucide-react";
 import { Tooltip } from "../tooltip";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../shared-comp/alert-dialog";
 
 export function SidebarLayout({ children }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -163,7 +175,8 @@ export function SidebarLayout({ children }) {
               </div>
 
               <div className="w-full p-2">
-                <div
+                {/* <div
+                  onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                   className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "hover:bg-orange-95 p-2" : "p-0"} `}
                 >
                   <Image
@@ -199,7 +212,68 @@ export function SidebarLayout({ children }) {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </div> */}
+
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <div
+                      className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "hover:bg-orange-95 p-2" : "p-0"} `}
+                    >
+                      <Image
+                        src="https://github.com/shadcn.png"
+                        alt="avatar"
+                        width={40}
+                        height={40}
+                        priority
+                        className="max-h-10 min-h-10 max-w-10 min-w-10 rounded-md"
+                      />
+
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            key="profile-info"
+                            initial={false}
+                            animate={{
+                              width: isOpen ? "100%" : 0,
+                              opacity: isOpen ? 1 : 0,
+                            }}
+                            transition={{ duration: 0.2 }}
+                            className="flex w-full items-center justify-between"
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-medium whitespace-nowrap">
+                                Deepak Bind
+                              </span>
+                              <span className="text-xs whitespace-nowrap">
+                                deepak7890bind@gmail.com
+                              </span>
+                            </div>
+                            <ChevronsUpDown size={16} />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to sign out?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        You will be logged out from your account and redirected
+                        to the sign-in page. You can sign in again at any time.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </motion.div>
 
