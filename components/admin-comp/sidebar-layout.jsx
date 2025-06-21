@@ -7,23 +7,21 @@ import Link from "next/link";
 import { LayoutDashboard } from "lucide-react";
 import { User } from "lucide-react";
 import Image from "next/image";
-import { ChevronsUpDown } from "lucide-react";
 import { Tooltip } from "../tooltip";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { ChevronsUpDown } from "lucide-react";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../shared-comp/alert-dialog";
+  Dropdown,
+  DropdownContent,
+  DropdownItem,
+  DropdownLabel,
+  DropdownSeparator,
+  DropdownTrigger,
+} from "../shared-comp/dropdown-menu";
 
 export function SidebarLayout({ children }) {
+  const { data: session, status } = useSession();
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(null);
   const pathname = usePathname();
@@ -175,105 +173,71 @@ export function SidebarLayout({ children }) {
               </div>
 
               <div className="w-full p-2">
-                {/* <div
-                  onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-                  className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "hover:bg-orange-95 p-2" : "p-0"} `}
-                >
-                  <Image
-                    src="https://github.com/shadcn.png"
-                    alt="avatar"
-                    width={40}
-                    height={40}
-                    priority
-                    className="max-h-10 min-h-10 max-w-10 min-w-10 rounded-md"
-                  />
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        key="profile-info"
-                        initial={false}
-                        animate={{
-                          width: isOpen ? "100%" : 0,
-                          opacity: isOpen ? 1 : 0,
-                        }}
-                        transition={{ duration: 0.2 }}
-                        className="flex w-full items-center justify-between"
+                <Dropdown>
+                  <DropdownTrigger>
+                    <div className="relative w-full">
+                      <div
+                        className={`flex cursor-pointer gap-2 overflow-hidden border border-red-500 rounded-md transition-all duration-200 ${
+                          isOpen ? "hover:bg-orange-95 p-2" : "p-0"
+                        }`}
                       >
-                        <div className="flex flex-col">
-                          <span className="font-medium whitespace-nowrap">
-                            Deepak Bind
-                          </span>
-                          <span className="text-xs whitespace-nowrap">
-                            deepak7890bind@gmail.com
-                          </span>
-                        </div>
-                        <ChevronsUpDown size={16} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div> */}
-
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                    <div
-                      className={`flex cursor-pointer gap-2 overflow-hidden rounded-md transition-all duration-200 ${isOpen ? "hover:bg-orange-95 p-2" : "p-0"} `}
-                    >
-                      <Image
-                        src="https://github.com/shadcn.png"
-                        alt="avatar"
-                        width={40}
-                        height={40}
-                        priority
-                        className="max-h-10 min-h-10 max-w-10 min-w-10 rounded-md"
-                      />
-
-                      <AnimatePresence>
-                        {isOpen && (
-                          <motion.div
-                            key="profile-info"
-                            initial={false}
-                            animate={{
-                              width: isOpen ? "100%" : 0,
-                              opacity: isOpen ? 1 : 0,
-                            }}
-                            transition={{ duration: 0.2 }}
-                            className="flex w-full items-center justify-between"
-                          >
-                            <div className="flex flex-col">
-                              <span className="font-medium whitespace-nowrap">
-                                Deepak Bind
-                              </span>
-                              <span className="text-xs whitespace-nowrap">
-                                deepak7890bind@gmail.com
-                              </span>
-                            </div>
-                            <ChevronsUpDown size={16} />
-                          </motion.div>
+                        {session?.user?.avatar ? (
+                          <Image
+                            src={session?.user?.avatar}
+                            alt="avatar"
+                            width={40}
+                            height={40}
+                            priority
+                            className="max-h-10 min-h-10 max-w-10 min-w-10 rounded-md"
+                          />
+                        ) : (
+                          <div className="bg-orange-90 flex min-h-10 min-w-10 items-center justify-center rounded-md font-semibold">
+                            {session?.user?.name?.charAt(0)?.toUpperCase()}
+                          </div>
                         )}
-                      </AnimatePresence>
+
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              key="profile-info"
+                              initial={false}
+                              animate={{ width: "100%", opacity: 1 }}
+                              exit={{ width: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="flex w-full items-center justify-between"
+                            >
+                              <div className="flex flex-col overflow-hidden">
+                                <span className="font-medium whitespace-nowrap">
+                                  {isOpen &&
+                                    session?.user?.name &&
+                                    session.user.name.charAt(0).toUpperCase() +
+                                      session.user.name.slice(1)}
+                                </span>
+                                <span className="text-xs whitespace-nowrap">
+                                  {isOpen && session?.user?.email}
+                                </span>
+                              </div>
+                              <ChevronsUpDown size={16} />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     </div>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you sure you want to sign out?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        You will be logged out from your account and redirected
-                        to the sign-in page. You can sign in again at any time.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-                      >
-                        Continue
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                  </DropdownTrigger>
+                  <DropdownContent>
+                    <DropdownLabel>Options</DropdownLabel>
+                    <DropdownItem>Edit</DropdownItem>
+                    <DropdownItem>Duplicate</DropdownItem>
+                    <DropdownSeparator />
+                    <DropdownItem
+                      onClick={() => {
+                        return signOut({ callbackUrl: "/auth/signin" });
+                      }}
+                    >
+                      Signout
+                    </DropdownItem>
+                  </DropdownContent>
+                </Dropdown>
               </div>
             </motion.div>
 

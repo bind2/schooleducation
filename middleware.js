@@ -1,50 +1,40 @@
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 
-const authRoutes = [
-  "/auth/signin",
-  "/auth/signup",
-  "/auth/forgot-password",
-  "/auth/reset-password",
-];
+export default withAuth(
+  function middleware(req) {
+    const { pathname } = req.nextUrl;
+    const token = req.nextauth.token;
 
-const adminRoutes = ["/admin"];
+    // Normalize path (remove trailing slash)
+    const normalizedPath = pathname.replace(/\/$/, "");
 
-export async function middleware(req) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const { pathname } = req.nextUrl;
+    // Auth pages: any route starting with /auth/
+    const isAuthPage = normalizedPath.startsWith("/auth");
 
-  const isAdminRoute = adminRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+    // Protected admin pages
+    const isAdminPage = normalizedPath.startsWith("/admin");
 
-  const isAuthRoute = authRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+    // 🔒 If user is logged in and visiting an auth page → redirect to /admin
+    if (token && isAuthPage) {
+      return NextResponse.redirect(new URL("/admin", req.url));
+    }
 
-  // ✅ Block unauthenticated access to admin routes
-  if (isAdminRoute && !token) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/auth/signin";
-    return NextResponse.redirect(url);
+    // 🔐 If user is not logged in and visiting a protected admin page → redirect to /auth/signin
+    if (!token && isAdminPage) {
+      return NextResponse.redirect(new URL("/auth/signin", req.url));
+    }
+
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: () => true, // Always run middleware, custom logic decides redirects
+    },
   }
+);
 
-  // ✅ Prevent logged-in users from accessing auth routes
-  if (token && isAuthRoute) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/admin"; // or your dashboard path
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next(); // Allow other cases
-}
-
+// Apply middleware to admin and auth routes
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/auth/signin",
-    "/auth/signup",
-    "/auth/forgot-password",
-    "/auth/reset-password",
-  ],
+  matcher: ["/admin/:path*", "/auth/:path*"],
 };

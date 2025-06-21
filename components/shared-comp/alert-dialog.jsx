@@ -1,42 +1,35 @@
 "use client";
 
 import {
-  createContext,
+  useState,
+  useRef,
   useContext,
   useEffect,
-  useState,
+  createContext,
   cloneElement,
-  isValidElement,
   useTransition,
 } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
+import { cn } from "@/lib/utils";
 
 const AlertDialogContext = createContext();
 
 export function AlertDialog({ children }) {
-  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    if (open) {
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    } else {
-      const timeout = setTimeout(() => {
-        document.body.style.overflow = "";
-        document.body.style.paddingRight = "";
-      }, 200); // Match animation duration
-
-      return () => clearTimeout(timeout);
-    }
-  }, [open]);
+  const [isPending, startTransition] = useTransition();
+  const [scrollLocked, setScrollLocked] = useState(false);
 
   return (
     <AlertDialogContext.Provider
-      value={{ open, setOpen, isPending, startTransition }}
+      value={{
+        open,
+        setOpen,
+        scrollLocked,
+        setScrollLocked,
+        isPending,
+        startTransition,
+      }}
     >
       {children}
     </AlertDialogContext.Provider>
@@ -45,92 +38,145 @@ export function AlertDialog({ children }) {
 
 export function AlertDialogTrigger({ children }) {
   const { setOpen } = useContext(AlertDialogContext);
-
-  if (isValidElement(children)) {
-    return cloneElement(children, {
-      onClick: (e) => {
-        children.props?.onClick?.(e); // Call child's original onClick if any
-        setOpen(true); // Then open dialog
-      },
-    });
-  }
-
-  // Fallback: wrap non-element (like a plain string) in a <button>
-  return (
-    <button
-      onClick={() => setOpen(true)}
-      className="rounded-md border border-gray-300 px-4 py-2 transition hover:bg-gray-100"
-    >
-      {children}
-    </button>
-  );
+  return cloneElement(children, {
+    onClick: () => setOpen(true),
+  });
 }
 
 export function AlertDialogContent({ children }) {
-  const { open } = useContext(AlertDialogContext);
+  const { open, setOpen, isPending, scrollLocked, setScrollLocked } =
+    useContext(AlertDialogContext);
+  const overlayRef = useRef(null);
+  const dialogRef = useRef(null);
 
-  return (
-    <AnimatePresence>
+  // 1. LOCK scroll on open
+  useEffect(() => {
+    if (!open || scrollLocked) return;
+
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    setScrollLocked(true);
+  }, [open, scrollLocked, setScrollLocked]);
+
+  // Close on ESC
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape" && !isPending) {
+        setOpen(false);
+      }
+    };
+    if (open) document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, isPending, setOpen]);
+
+  // Focus trap
+  useEffect(() => {
+    if (!open || !dialogRef.current) return;
+
+    const focusable = dialogRef.current.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    const trap = (e) => {
+      if (e.key !== "Tab") return;
+
+      // prevent all tabbing during loading
+      if (isPending) {
+        e.preventDefault();
+        return;
+      }
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", trap);
+    first?.focus();
+    return () => document.removeEventListener("keydown", trap);
+  }, [open, isPending]);
+
+  if (typeof window === "undefined" || !document.body) return null;
+
+  return createPortal(
+    <AnimatePresence
+      onExitComplete={() => {
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+        setScrollLocked(false);
+      }}
+    >
       {open && (
-        <>
-          {/* Overlay */}
+        <motion.div
+          ref={overlayRef}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
           <motion.div
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          />
-
-          {/* Dialog */}
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            ref={dialogRef}
+            className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
+            role="alertdialog"
+            aria-modal="true"
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
           >
-            <div className="w-full max-w-lg space-y-4 rounded-lg bg-white p-6 shadow-lg dark:bg-gray-900">
-              {children}
-            </div>
+            {children}
           </motion.div>
-        </>
+        </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 
 export function AlertDialogHeader({ children }) {
-  return <div className="space-y-2">{children}</div>;
+  return <div className="space-y-1 text-left">{children}</div>;
 }
 
 export function AlertDialogTitle({ children }) {
-  return (
-    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-      {children}
-    </h2>
-  );
+  return <h2 className="text-lg font-semibold select-none">{children}</h2>;
 }
 
 export function AlertDialogDescription({ children }) {
-  return <p className="text-sm text-gray-600 dark:text-gray-300">{children}</p>;
+  return (
+    <p className="text-sm text-gray-500 select-none dark:text-gray-400">
+      {children}
+    </p>
+  );
 }
 
 export function AlertDialogFooter({ children }) {
-  return (
-    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-      {children}
-    </div>
-  );
+  return <div className="mt-6 flex justify-end gap-2">{children}</div>;
 }
 
 export function AlertDialogCancel({ children }) {
   const { setOpen, isPending } = useContext(AlertDialogContext);
   return (
     <button
-      onClick={() => setOpen(false)}
       disabled={isPending}
-      className="cursor-pointer rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
+      onClick={() => setOpen(false)}
+      className={cn(
+        "rounded-md border border-gray-300 px-4 py-2 text-sm select-none",
+        {
+          "cursor-not-allowed": isPending,
+          "cursor-pointer hover:bg-gray-100": !isPending,
+        },
+      )}
     >
       {children}
     </button>
@@ -141,19 +187,34 @@ export function AlertDialogAction({ children, onClick }) {
   const { setOpen, startTransition, isPending } =
     useContext(AlertDialogContext);
 
+  const handleClick = () => {
+    startTransition(async () => {
+      await onClick?.();
+      // Only close the dialog if signOut succeeds
+      setOpen(false);
+    });
+  };
+
   return (
     <button
-      onClick={() => {
-        startTransition(async () => {
-          await onClick?.();
-          // Only close the dialog if signOut succeeds
-          setOpen(false);
-        });
-      }}
+      onClick={handleClick}
       disabled={isPending}
-      className="cursor-pointer rounded-md bg-red-600 px-4 py-2 text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+      className={cn(
+        "rounded-md bg-red-600 px-4 py-2 text-sm text-white select-none",
+        {
+          "cursor-not-allowed": isPending,
+          "cursor-pointer hover:bg-red-700": !isPending,
+        },
+      )}
     >
-      {isPending ? "Loading..." : children}
+      {isPending ? (
+        <div className="flex items-center justify-center gap-2">
+          <span className="block min-h-4 min-w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          Loading...
+        </div>
+      ) : (
+        children
+      )}
     </button>
   );
 }

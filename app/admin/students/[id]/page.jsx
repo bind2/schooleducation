@@ -39,6 +39,7 @@ export default function StudentInfo({ params }) {
             <InfoRow label="ID" value={data?.id} />
             <InfoRow label="Parent Name" value={data?.parentName} />
             <InfoRow label="Student Name" value={data?.studentName} />
+            <InfoRow label="Email Address" value={data?.email} />
             <InfoRow label="Student Age" value={data?.studentAge} />
             <InfoRow label="Phone Number" value={data?.phoneNumber} />
             <InfoRow
